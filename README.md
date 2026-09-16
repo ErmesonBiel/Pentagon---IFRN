@@ -8,5 +8,6 @@ Sistema web voltado para organização de campeonatos de jogos online e presenci
 - **Gabriele Costa** 
 
 ## Tecnologias Utilizadas
-- **Backend:** 
-- **Banco de Dados:** 
+- **Backend:**
+- **Banco de Dados:**
+- **Frontend:** 
