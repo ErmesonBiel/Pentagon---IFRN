@@ -1,11 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perfil</title>
+  <meta charset="UTF-8">
+  <title>Pentagon - Perfil</title>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    
+  <header class="navbar">
+    <a href="dashboard.html" class="logo-container">Pentagon.</a>
+    <nav>
+      <a href="dashboard.html">PAINEL</a>
+      <a href="ranking.html">RANKING</a>
+      <a href="partidas.html">PARTIDAS</a>
+      <a href="perfil.html" class="active">PERFIL</a>
+    </nav>
+  </header>
+
+  <main class="table-container" style="text-align: center;">
+    <h2 id="userNome" class="page-title">Carregando...</h2>
+    <p id="userEmail" style="color: #a827ff; margin-bottom: 30px;">email@exemplo.com</p>
+
+    <div style="display: flex; justify-content: space-around; background: rgba(0,0,0,0.5); padding: 20px; border-radius: 15px;">
+      <div>
+        <h3>Status da Conta</h3>
+        <p style="color: #4ade80;">Ativo</p>
+      </div>
+      <div>
+        <h3>Tipo de Acesso</h3>
+        <p>Organizador / Jogador</p>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/mockData.js"></script>
+  <script src="js/app.js"></script>
 </body>
 </html>

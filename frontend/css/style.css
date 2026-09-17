@@ -1,0 +1,230 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Poppins:wght@300;400;600&display=swap');
+
+:root {
+  --bg-dark: #08020f;
+  --purple-primary: #a827ff;
+  --purple-glow: #6b00d7;
+  --card-bg: rgba(18, 10, 28, 0.85);
+  --input-bg: #1c1a24;
+  --text-white: #ffffff;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background-color: var(--bg-dark);
+  color: var(--text-white);
+  min-height: 100vh;
+  background-image: 
+    radial-gradient(circle at 10% 90%, rgba(168, 39, 255, 0.35) 0%, transparent 40%),
+    radial-gradient(circle at 90% 90%, rgba(168, 39, 255, 0.4) 0%, transparent 45%);
+  background-attachment: fixed;
+}
+
+.navbar {
+  background-color: #ffffff;
+  color: #000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 50px;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  font-size: 1.4rem;
+  color: var(--purple-glow);
+  text-decoration: none;
+}
+
+.navbar nav a {
+  text-decoration: none;
+  color: #333;
+  margin-left: 25px;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.navbar nav a.active, .navbar nav a:hover {
+  color: var(--purple-primary);
+  border-bottom: 2px solid var(--purple-primary);
+}
+
+.auth-container, .form-container {
+  max-width: 450px;
+  margin: 50px auto;
+  text-align: center;
+}
+
+.auth-container h2, .page-title {
+  font-size: 2.2rem;
+  margin-bottom: 25px;
+  color: var(--text-white);
+}
+
+.input-group {
+  text-align: left;
+  margin-bottom: 15px;
+}
+
+.input-group label {
+  display: block;
+  font-size: 0.8rem;
+  color: #c4b5fd;
+  margin-bottom: 5px;
+}
+
+.input-group input, .input-group select {
+  width: 100%;
+  padding: 12px 18px;
+  background-color: var(--input-bg);
+  border: 1px solid #2d2a3a;
+  border-radius: 25px;
+  color: #fff;
+  outline: none;
+}
+
+.input-row {
+  display: flex;
+  gap: 15px;
+}
+
+.btn-primary {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(90deg, #a827ff, #8b00ff);
+  border: none;
+  border-radius: 25px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.btn-secondary {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  background-color: #ffffff;
+  color: #000;
+  text-decoration: none;
+  border-radius: 25px;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.divider {
+  margin: 15px 0;
+  border-bottom: 1px solid #333;
+  line-height: 0.1em;
+}
+
+.divider span {
+  background: var(--bg-dark);
+  padding: 0 10px;
+  color: #888;
+  font-size: 0.8rem;
+}
+
+/* Dashboard / Grid de Opções */
+.dashboard {
+  padding: 50px 80px;
+}
+
+.title-pentagon {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 3.5rem;
+  color: #a827ff;
+}
+
+.subtitle {
+  color: #ccc;
+  margin-bottom: 40px;
+}
+
+.cards-grid {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.card {
+  width: 180px;
+  height: 220px;
+  background: var(--card-bg);
+  border: 1px solid rgba(168, 39, 255, 0.4);
+  border-radius: 20px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+  text-decoration: none;
+  color: white;
+  transition: transform 0.3s, border-color 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  border-color: #a827ff;
+  box-shadow: 0 0 15px rgba(168, 39, 255, 0.4);
+}
+
+.card-icon {
+  align-self: flex-end;
+  background-color: #000;
+  border: 1px solid #a827ff;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+}
+
+/* Tabelas */
+.table-container {
+  max-width: 900px;
+  margin: 40px auto;
+  background: var(--card-bg);
+  border-radius: 15px;
+  padding: 20px;
+  border: 1px solid rgba(168, 39, 255, 0.3);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #2d2a3a;
+}
+
+th {
+  color: #a827ff;
+  font-family: 'Orbitron', sans-serif;
+}
+
+.btn-del {
+  background: #ff3366;
+  border: none;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 10px;
+  cursor: pointer;
+}

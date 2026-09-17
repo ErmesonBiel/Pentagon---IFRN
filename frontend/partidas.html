@@ -1,11 +1,45 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Partidas</title>
+  <meta charset="UTF-8">
+  <title>Pentagon - Registrar Partida</title>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    
+  <header class="navbar">
+    <a href="dashboard.html" class="logo-container">Pentagon.</a>
+    <nav>
+      <a href="dashboard.html">PAINEL</a>
+      <a href="ranking.html">RANKING</a>
+      <a href="partidas.html" class="active">PARTIDAS</a>
+      <a href="perfil.html">PERFIL</a>
+    </nav>
+  </header>
+
+  <main class="form-container">
+    <h2 class="page-title">Registrar Resultado</h2>
+    <form id="formPartida">
+      <div class="input-group">
+        <label>Jogador 1</label>
+        <input type="text" id="j1" placeholder="Maria Vitória" required>
+      </div>
+      <div class="input-group">
+        <label>Jogador 2</label>
+        <input type="text" id="j2" placeholder="Emerson Gabriel" required>
+      </div>
+      <div class="input-group">
+        <label>Vencedor (Definição Única - RN02)</label>
+        <input type="text" id="vencedor" placeholder="Nome do Vencedor" required>
+      </div>
+      <div class="input-group">
+        <label>Placar</label>
+        <input type="text" id="placar" placeholder="2 x 1" required>
+      </div>
+      <button type="submit" class="btn-primary">Salvar e Atualizar Ranking</button>
+    </form>
+  </main>
+
+  <script src="js/mockData.js"></script>
+  <script src="js/app.js"></script>
 </body>
 </html>
