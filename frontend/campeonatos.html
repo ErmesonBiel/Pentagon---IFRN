@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Pentagon - Registrar Partida</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/partidas.css">
+</head>
+<body>
+  <header class="navbar">
+    <a href="dashboard.html" class="logo-container">Pentagon.</a>
+    <nav>
+      <a href="dashboard.html">PAINEL</a>
+      <a href="ranking.html">RANKING</a>
+      <a href="partidas.html" class="active">PARTIDAS</a>
+      <a href="perfil.html">PERFIL</a>
+    </nav>
+  </header>
+
+      <!-- CONTEÚDO -->
+    <main class="conteudo">
+
+        <!-- TITULO PRINCIPAL -->
+        <h1 class="titulo principal">Campeonatos ativos</h1>
+        
+        <p class="subtitulo">
+          Onde existe um <em>campeão</em>, existe uma <em>história</em>
+        </p>
+
+        <!-- GRADE COM 3 CAMPEONATOS -->
+        <section class="grade">
+
+            <!-- CARD 1 -->
+            <div class="card">
+                <div class="card-numero">01</div>
+                <div class="card-quadrado">
+                    <span class="card-jogo">Valorant</span>
+                </div>
+                <h3 class="card-titulo">Copa Valorant</h3>
+                <p class="card-descricao">
+                    Torneio 5v5 competitivo com fase de grupos e eliminatórias.
+                </p>
+            </div>
+
+            <!-- CARD 2 -->
+            <div class="card">
+                <div class="card-numero">02</div>
+                <div class="card-quadrado">
+                    <span class="card-jogo">CS2</span>
+                </div>
+                <h3 class="card-titulo">Campeonato CS2 Amador</h3>
+                <p class="card-descricao">
+                    Competição aberta para times iniciantes e intermediários.
+                </p>
+            </div>
+
+            <!-- CARD 3 -->
+            <div class="card">
+                <div class="card-numero">03</div>
+                <div class="card-quadrado">
+                    <span class="card-jogo">Rocket League</span>
+                </div>
+                <h3 class="card-titulo">Liga Rocket League</h3>
+                <p class="card-descricao">
+                    Disputa 3v3 em formato de liga com pontos corridos.
+                </p>
+            </div>
+
+        </section>
+
+    </main>
+
+  <script src="js/mockData.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
