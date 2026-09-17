@@ -193,3 +193,21 @@ function renderizarChaveamento() {
     </div>
     `;
 }
+
+const historicoList = document.getElementById("historicoPerfil");
+  if (historicoList) {
+    const partidas = JSON.parse(localStorage.getItem("pentagon_partidas")) || [];
+    historicoList.innerHTML = "";
+
+    if (partidas.length === 0) {
+      historicoList.innerHTML = "<li>Nenhuma partida registrada ainda.</li>";
+    } else {
+      partidas.slice(-5).reverse().forEach(p => {
+        const li = document.createElement("li");
+        li.style.padding = "8px 0";
+        li.style.borderBottom = "1px solid rgba(255,255,255,0.1)";
+        li.innerHTML = `🎮 <strong>${p.jogador1}</strong> (${p.placar}) <strong>${p.jogador2}</strong> — Vencedor: <span style="color: #4ade80;">${p.vencedor}</span>`;
+        historicoList.appendChild(li);
+      });
+    }
+  }
