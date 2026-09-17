@@ -1,0 +1,159 @@
+/* ===== WRAPPER (centraliza tudo) ===== */
+.campeonatos-wrapper {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 60px 40px 100px;
+    text-align: center;
+}
+
+/* ===== TÍTULO PRINCIPAL (Campeonatos Ativos) ===== */
+h1.titulo-principal {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 3rem;
+    font-weight: 900;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: #fff;
+    text-align: center;
+    margin: 0 auto 20px;
+    text-shadow: 0 0 20px rgba(168, 39, 255, 0.6);
+    position: relative;
+}
+
+h1.titulo-principal::after {
+    content: "";
+    display: block;
+    width: 90px;
+    height: 3px;
+    background: var(--purple-primary);
+    box-shadow: 0 0 12px var(--purple-primary);
+    margin: 20px auto 0;
+    border-radius: 2px;
+}
+
+/* ===== SUBTÍTULO (Onde existe um campeão...) ===== */
+p.subtitulo {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 300;
+    color: #c4b5fd;
+    text-align: center;
+    margin-bottom: 70px;
+    letter-spacing: 0.5px;
+}
+
+p.subtitulo em {
+    font-family: 'Orbitron', sans-serif;
+    font-style: italic;
+    font-weight: 700;
+    color: var(--purple-primary);
+    text-shadow: 0 0 10px rgba(168, 39, 255, 0.5);
+}
+
+/* ===== GRADE DE CARDS (3 colunas centralizadas) ===== */
+section.grade-campeonatos {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 50px;
+    max-width: 950px;
+    margin: 0 auto;      /* centraliza a grade na página */
+}
+
+/* ===== CARD ===== */
+div.campeonato-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+/* Número em cima */
+.card-numero {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 3px;
+    color: #c4b5fd;
+    margin-bottom: 15px;
+}
+
+/* ===== QUADRADO (só o nome do jogo dentro) ===== */
+.card-quadrado {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background: var(--card-bg);
+    border: 1px solid rgba(168, 39, 255, 0.4);
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+}
+
+.campeonato-card:hover .card-quadrado {
+    transform: translateY(-6px);
+    border-color: var(--purple-primary);
+    box-shadow: 0 0 25px rgba(168, 39, 255, 0.55);
+}
+
+/* Nome do jogo */
+.card-jogo {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-align: center;
+    line-height: 1.2;
+    text-shadow: 0 0 10px rgba(168, 39, 255, 0.6);
+}
+
+/* ===== NOME DO CAMPEONATO (embaixo do quadrado) ===== */
+.card-titulo {
+    font-family: 'Orbitron', sans-serif;
+    margin-top: 22px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #fff;
+    border-bottom: 1px solid var(--purple-primary);
+    padding-bottom: 6px;
+    display: inline-block;
+}
+
+/* ===== DESCRIÇÃO (embaixo, FORA da caixinha) ===== */
+.card-descricao {
+    margin-top: 14px;
+    font-size: 0.85rem;
+    color: #c4b5fd;
+    line-height: 1.5;
+    max-width: 260px;
+    text-align: center;
+}
+
+/* ===== RESPONSIVO ===== */
+@media (max-width: 900px) {
+    .campeonatos-wrapper {
+        padding: 40px 20px 80px;
+    }
+
+    .titulo-principal {
+        font-size: 2rem;
+        letter-spacing: 2px;
+    }
+
+    .subtitulo {
+        font-size: 0.95rem;
+        margin-bottom: 50px;
+    }
+
+    .grade-campeonatos {
+        grid-template-columns: 1fr;
+        gap: 50px;
+    }
+
+
+}
