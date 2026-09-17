@@ -192,23 +192,32 @@ function renderizarChaveamento() {
 
   const partidas = JSON.parse(localStorage.getItem("pentagon_partidas")) || [];
 
-  const ultimaPartida = partidas.length > 0 ? partidas[partidas.length - 1] : null;
-  const textoConfronto = ultimaPartida ? `${ultimaPartida.jogador1} (${ultimaPartida.placar}) ${ultimaPartida.jogador2}` : "Aguardando...";
-  const vencedorFinal = ultimaPartida ? `Vencedor: ${ultimaPartida.vencedor}` : "-";
+  const ultima = partidas.length > 0 ? partidas[partidas.length - 1] : null;
+  const penultima = partidas.length > 1 ? partidas[partidas.length - 2] : null;
+
+  const confronto1 = penultima ? `${penultima.jogador1} vs ${penultima.jogador2}` : "Aguardando...";
+  const confronto2 = ultima ? `${ultima.jogador1} vs ${ultima.jogador2}` : "Aguardando...";
+
+  const vencedor1 = penultima ? penultima.vencedor : "Aguardando...";
+  const vencedor2 = ultima ? ultima.vencedor : "Aguardando...";
+
+   const semifinalTexto = (penultima && ultima) ? `${vencedor1} vs ${vencedor2}` : "Aguardando definição...";
+  
+  const finalTexto = partidas.length > 2 ? `Disputa Final definida` : "-";
 
   container.innerHTML = `
-    <div class="round"> 
-      <div class="round">
-      <h3>Partidas Recentes</h3>
-      <div class="matchup"><span>${textoConfronto}</span></div>
+    <div class="round">
+      <h3>Quartas de Final</h3>
+      <div class="matchup"><span>${confronto1}</span></div>
+      <div class="matchup"><span>${confronto2}</span></div>
     </div>
     <div class="round">
-      <h3>Semifinal</h3>
-      <div class="matchup"><span>${ultimaPartida ? ultimaPartida.vencedor : "Aguardando..."}</span></div>
+      <h3>Semifinais</h3>
+      <div class="matchup"><span>${semifinalTexto}</span></div>
     </div>
     <div class="round">
       <h3>Final</h3>
-      <div class="matchup"><span>${vencedorFinal}</span></div>
+      <div class="matchup"><span>${finalTexto}</span></div>
     </div>
   `;
 }
