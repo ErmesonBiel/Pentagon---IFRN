@@ -6,6 +6,7 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+
   <header class="navbar">
     <a href="dashboard.html" class="logo-container">Pentagon.</a>
     <nav>
@@ -17,26 +18,56 @@
   </header>
 
   <main class="form-container">
-    <h2 class="page-title">Registrar Resultado</h2>
+    <h2 class="page-title">Registrar Resultados</h2>
     <form id="formPartida">
+
       <div class="input-group">
-        <label>Jogador 1</label>
-        <input type="text" id="j1" placeholder="Maria Vitória" required>
+        <label for="j1">Jogador 1</label>
+        <select id="j1" required>
+          <option value="" disabled selected>Selecione o Jogador 1</option>
+        </select>
       </div>
+
       <div class="input-group">
-        <label>Jogador 2</label>
-        <input type="text" id="j2" placeholder="Emerson Gabriel" required>
+        <label for="j2">Jogador 2</label>
+        <select id="j2" required>
+          <option value="" disabled selected>Selecione o Jogador 2</option>
+        </select>
       </div>
+
       <div class="input-group">
-        <label>Vencedor (Definição Única - RN02)</label>
-        <input type="text" id="vencedor" placeholder="Nome do Vencedor" required>
+        <label for="vencedor">Vencedor</label>
+        <select id="vencedor" required>
+          <option value="" disabled selected>Selecione o Vencedor</option>
+        </select>
       </div>
+
       <div class="input-group">
-        <label>Placar</label>
-        <input type="text" id="placar" placeholder="2 x 1" required>
+        <label for="placar">Placar</label>
+        <input type="text" id="placar" placeholder="Ex:2 x 1" required>
       </div>
+
       <button type="submit" class="btn-primary">Salvar e Atualizar Ranking</button>
     </form>
+
+    <section class="bracket-section" style="margin-top: 40px;">
+      <h2 class="page-title" style="font-size: 1.5rem; margin-bottom: 20px;">Chaveamento do Torneio</h2>
+      <div id="bracket-container" class="bracket-grid">
+        <div class="round">
+          <h3>Quartas de Final</h3>
+          <div class="matchup"><span>Aguardando...</span></div>
+          <div class="matchup"><span>Aguardando...</span></div>
+        </div>
+        <div class="round">
+          <h3>Semifinais</h3>
+          <div class="matchup"><span>Aguardando...</span></div>
+        </div>
+        <div class="round">
+          <h3>Final</h3>
+          <div class="matchup"><span>-</span></div>
+        </div>
+      </div>
+    </section>  
   </main>
 
   <script src="js/mockData.js"></script>
