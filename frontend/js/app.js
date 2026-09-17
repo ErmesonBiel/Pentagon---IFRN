@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function carregarJogadoresNosSelects() {
     if (!selectJ1 || !selectJ2) return;
 
-    const ranking = JSON.parse(LocalStorage.getItem("pentagon_ranking")) || [];
+    const ranking = JSON.parse(localStorage.getItem("pentagon_ranking")) || [];
 
     selectJ1.innerHTML = '<option value="" disabled selected>Selecione o Jogador 1</option>';
     selectJ2.innerHTML = '<option value="" disabled selected>Selecione o Jogador 2</option>';
@@ -122,6 +122,24 @@ document.addEventListener("DOMContentLoaded", () => {
     userNomeElement.innerText = userLogado.nome;
     document.getElementById("userEmail").innerText = userLogado.email;
   }
+
+  const historicoList = document.getElementById("historicoPerfil");
+  if (historicoList) {
+    const partidas = JSON.parse(localStorage.getItem("pentagon_partidas")) || [];
+    historicoList.innerHTML = "";
+
+    if (partidas.length === 0) {
+      historicoList.innerHTML = "<li>Nenhuma partida registrada ainda.</li>";
+    } else {
+      partidas.slice(-5).reverse().forEach(p => {
+        const li = document.createElement("li");
+        li.style.padding = "8px 0";
+        li.style.borderBottom = "1px solid rgba(255,255,255,0.1)";
+        li.innerHTML = `<strong>${p.jogador1}</strong> (${p.placar}) <strong>${p.jogador2}</strong> — Vencedor: <span style="color: #4ade80;">${p.vencedor}</span>`;
+        historicoList.appendChild(li);
+      });
+    }
+  }
 });
 
 function renderizarRanking() {
@@ -179,7 +197,8 @@ function renderizarChaveamento() {
   const vencedorFinal = ultimaPartida ? `Vencedor: ${ultimaPartida.vencedor}` : "-";
 
   container.innerHTML = `
-    <<div class="round">
+    <div class="round"> 
+      <div class="round">
       <h3>Partidas Recentes</h3>
       <div class="matchup"><span>${textoConfronto}</span></div>
     </div>
@@ -191,23 +210,5 @@ function renderizarChaveamento() {
       <h3>Final</h3>
       <div class="matchup"><span>${vencedorFinal}</span></div>
     </div>
-    `;
+  `;
 }
-
-const historicoList = document.getElementById("historicoPerfil");
-  if (historicoList) {
-    const partidas = JSON.parse(localStorage.getItem("pentagon_partidas")) || [];
-    historicoList.innerHTML = "";
-
-    if (partidas.length === 0) {
-      historicoList.innerHTML = "<li>Nenhuma partida registrada ainda.</li>";
-    } else {
-      partidas.slice(-5).reverse().forEach(p => {
-        const li = document.createElement("li");
-        li.style.padding = "8px 0";
-        li.style.borderBottom = "1px solid rgba(255,255,255,0.1)";
-        li.innerHTML = ` <strong>${p.jogador1}</strong> (${p.placar}) <strong>${p.jogador2}</strong> — Vencedor: <span style="color: #4ade80;">${p.vencedor}</span>`;
-        historicoList.appendChild(li);
-      });
-    }
-  }
