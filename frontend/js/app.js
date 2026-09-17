@@ -192,28 +192,36 @@ function renderizarChaveamento() {
 
   const partidas = JSON.parse(localStorage.getItem("pentagon_partidas")) || [];
 
-  const ultima = partidas.length > 0 ? partidas[partidas.length - 1] : null;
-  const penultima = partidas.length > 1 ? partidas[partidas.length - 2] : null;
+  const p1 = partidas[0] ? `${partidas[0].jogador1} vs ${partidas[0].jogador2} (${partidas[0].vencedor})` : "Aguardando...";
+  const p2 = partidas[1] ? `${partidas[1].jogador1} vs ${partidas[1].jogador2} (${partidas[1].vencedor})` : "Aguardando...";
+  const p3 = partidas[2] ? `${partidas[2].jogador1} vs ${partidas[2].jogador2} (${partidas[2].vencedor})` : "Aguardando...";
+  const p4 = partidas[3] ? `${partidas[3].jogador1} vs ${partidas[3].jogador2} (${partidas[3].vencedor})` : "Aguardando...";
 
-  const confronto1 = penultima ? `${penultima.jogador1} vs ${penultima.jogador2}` : "Aguardando...";
-  const confronto2 = ultima ? `${ultima.jogador1} vs ${ultima.jogador2}` : "Aguardando...";
+  const v1 = partidas[0] ? partidas[0].vencedor : "Aguardando...";
+  const v2 = partidas[1] ? partidas[1].vencedor : "Aguardando...";
+  const v3 = partidas[2] ? partidas[2].vencedor : "Aguardando...";
+  const v4 = partidas[3] ? partidas[3].vencedor : "Aguardando...";
 
-  const vencedor1 = penultima ? penultima.vencedor : "Aguardando...";
-  const vencedor2 = ultima ? ultima.vencedor : "Aguardando...";
+  const semi1 = (partidas[4]) ? `${partidas[4].jogador1} vs ${partidas[4].jogador2} (${partidas[4].vencedor})` : `${v1} vs ${v2}`;
+  const semi2 = (partidas[5]) ? `${partidas[5].jogador1} vs ${partidas[5].jogador2} (${partidas[5].vencedor})` : `${v3} vs ${v4}`;
 
-   const semifinalTexto = (penultima && ultima) ? `${vencedor1} vs ${vencedor2}` : "Aguardando definição...";
-  
-  const finalTexto = partidas.length > 2 ? `Disputa Final definida` : "-";
+  const vencedorSemi1 = partidas[4] ? partidas[4].vencedor : "Aguardando...";
+  const vencedorSemi2 = partidas[5] ? partidas[5].vencedor : "Aguardando...";
+
+  const finalTexto = partidas[6] ? `${partidas[6].jogador1} vs ${partidas[6].jogador2} — Vencedor: ${partidas[6].vencedor}` : `${vencedorSemi1} vs ${vencedorSemi2}`;
 
   container.innerHTML = `
     <div class="round">
       <h3>Quartas de Final</h3>
-      <div class="matchup"><span>${confronto1}</span></div>
-      <div class="matchup"><span>${confronto2}</span></div>
+      <div class="matchup"><span>${p1}</span></div>
+      <div class="matchup"><span>${p2}</span></div>
+      <div class="matchup"><span>${p3}</span></div>
+      <div class="matchup"><span>${p4}</span></div>
     </div>
     <div class="round">
       <h3>Semifinais</h3>
-      <div class="matchup"><span>${semifinalTexto}</span></div>
+      <div class="matchup"><span>${semi1}</span></div>
+      <div class="matchup"><span>${semi2}</span></div>
     </div>
     <div class="round">
       <h3>Final</h3>
