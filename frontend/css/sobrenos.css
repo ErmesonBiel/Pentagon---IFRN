@@ -1,0 +1,62 @@
+.sobre-container {
+    max-width: 900px;
+    margin: 50px auto;
+    background: var(--card-bg,rgba(18, 10, 28, 0.85));
+    border: 1px solid rgba(168, 39, 255, 0.4);
+    border-radius: 20px;
+    padding: 40px;
+    text-align: center;
+}
+
+.sobre-container h2 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2.5rem;
+    color: #fff;
+    margin-bottom: 30px;
+}
+
+.integrantes-grid {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
+}
+
+.integrante-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.foto-equipe {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--purple-primary, #a827ff);
+  box-shadow: 0 0 15px rgba(168, 39, 255, 0.5);
+  margin-bottom: 10px;
+}
+
+.nome-integrante {
+  color: #fff;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.95rem;
+  letter-spacing: 1px;
+}
+
+.sobre-texto {
+  color: #c4b5fd;
+  font-size: 1rem;
+  line-height: 1.6;
+  text-align: left;
+  margin-top: 20px;
+  border-top: 1px solid rgba(168, 39, 255, 0.3);
+  padding-top: 20px;
+}
+
+.sobre-texto p + p {
+  margin-top: 15px;
+}
+
