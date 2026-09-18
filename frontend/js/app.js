@@ -32,6 +32,58 @@ document.addEventListener("DOMContentLoaded", () => {
     renderizarRanking();
   }
 
+  const selectJ1 = document.getElementById("j1");
+  const selectJ2 = document.getElementById("j2");
+  const selectVencedor = document.getElementById("vencedor");
+
+  function carregarJogadoresNosSelects() {
+    if (!selectJ1 || !selectJ2) return;
+
+    const ranking = JSON.parse(localStorage.getItem("pentagon_ranking")) || [];
+
+    selectJ1.innerHTML = '<option value="" disabled selected>Selecione o Jogador 1</option>';
+    selectJ2.innerHTML = '<option value="" disabled selected>Selecione o Jogador 2</option>';
+
+    ranking.forEach(jogador => {
+      const opt1 = document.createElement("option");
+      opt1.value = jogador.nickname;
+      opt1.textContent = jogador.nickname;
+      selectJ1.appendChild(opt1);
+
+      const opt2 = document.createElement("option");
+      opt2.value = jogador.nickname;
+      opt2.textContent = jogador.nickname;
+      selectJ2.appendChild(opt2);
+    });
+  }
+
+  function atualizarOpcoesVencedor() {
+    if (!selectVencedor) return;
+    const j1Val = selectJ1.value;
+    const j2Val = selectJ2.value;
+
+    selectVencedor.innerHTML = '<option value="" disabled selected>Selecione o Vencedor</option>';
+
+    if (j1Val) {
+      const opt1 = document.createElement("option");
+      opt1.value = j1Val;
+      opt1.textContent = j1Val;
+      selectVencedor.appendChild(opt1);
+    }
+    if (j2Val && j2Val !== j1Val) {
+      const opt2 = document.createElement("option");
+      opt2.value = j2Val;
+      opt2.textContent = j2Val;
+      selectVencedor.appendChild(opt2);
+    }  
+  }
+
+  if (selectJ1 && selectJ2) {
+    carregarJogadoresNosSelects();
+    selectJ1.addEventListener("change", atualizarOpcoesVencedor);
+    selectJ2.addEventListener("change", atualizarOpcoesVencedor);
+  }
+
   const formPartida = document.getElementById("formPartida");
   if (formPartida) {
     formPartida.addEventListener("submit", (e) => {
@@ -52,10 +104,16 @@ document.addEventListener("DOMContentLoaded", () => {
       localStorage.setItem("pentagon_partidas", JSON.stringify(partidas));
 
       atualizarPontos(vencedor);
+      renderizarChaveamento();
 
-      alert("Partida registrada e ranking atualizado!");
+      alert("Partida registrada e ranking atualizado com sucesso!");
       formPartida.reset();
+      atualizarOpcoesVencedor();
     });
+  }
+
+  if (document.getElementById("bracket-container")){
+    renderizarChaveamento();
   }
 
   const userNomeElement = document.getElementById("userNome");
@@ -63,6 +121,24 @@ document.addEventListener("DOMContentLoaded", () => {
     const userLogado = JSON.parse(localStorage.getItem("usuarioLogado")) || { nome: "Maria Vitória", email: "maria@gmail.com" };
     userNomeElement.innerText = userLogado.nome;
     document.getElementById("userEmail").innerText = userLogado.email;
+  }
+
+  const historicoList = document.getElementById("historicoPerfil");
+  if (historicoList) {
+    const partidas = JSON.parse(localStorage.getItem("pentagon_partidas")) || [];
+    historicoList.innerHTML = "";
+
+    if (partidas.length === 0) {
+      historicoList.innerHTML = "<li>Nenhuma partida registrada ainda.</li>";
+    } else {
+      partidas.slice(-5).reverse().forEach(p => {
+        const li = document.createElement("li");
+        li.style.padding = "8px 0";
+        li.style.borderBottom = "1px solid rgba(255,255,255,0.1)";
+        li.innerHTML = `<strong>${p.jogador1}</strong> (${p.placar}) <strong>${p.jogador2}</strong> — Vencedor: <span style="color: #4ade80;">${p.vencedor}</span>`;
+        historicoList.appendChild(li);
+      });
+    }
   }
 });
 
@@ -108,4 +184,48 @@ function removerJogador(id) {
     localStorage.setItem("pentagon_ranking", JSON.stringify(ranking));
     renderizarRanking();
   }
+}
+
+function renderizarChaveamento() {
+  const container = document.getElementById("bracket-container");
+  if (!container) return;
+
+  const partidas = JSON.parse(localStorage.getItem("pentagon_partidas")) || [];
+
+  const p1 = partidas[0] ? `${partidas[0].jogador1} vs ${partidas[0].jogador2} (${partidas[0].vencedor})` : "Aguardando...";
+  const p2 = partidas[1] ? `${partidas[1].jogador1} vs ${partidas[1].jogador2} (${partidas[1].vencedor})` : "Aguardando...";
+  const p3 = partidas[2] ? `${partidas[2].jogador1} vs ${partidas[2].jogador2} (${partidas[2].vencedor})` : "Aguardando...";
+  const p4 = partidas[3] ? `${partidas[3].jogador1} vs ${partidas[3].jogador2} (${partidas[3].vencedor})` : "Aguardando...";
+
+  const v1 = partidas[0] ? partidas[0].vencedor : "Aguardando...";
+  const v2 = partidas[1] ? partidas[1].vencedor : "Aguardando...";
+  const v3 = partidas[2] ? partidas[2].vencedor : "Aguardando...";
+  const v4 = partidas[3] ? partidas[3].vencedor : "Aguardando...";
+
+  const semi1 = (partidas[4]) ? `${partidas[4].jogador1} vs ${partidas[4].jogador2} (${partidas[4].vencedor})` : `${v1} vs ${v2}`;
+  const semi2 = (partidas[5]) ? `${partidas[5].jogador1} vs ${partidas[5].jogador2} (${partidas[5].vencedor})` : `${v3} vs ${v4}`;
+
+  const vencedorSemi1 = partidas[4] ? partidas[4].vencedor : "Aguardando...";
+  const vencedorSemi2 = partidas[5] ? partidas[5].vencedor : "Aguardando...";
+
+  const finalTexto = partidas[6] ? `${partidas[6].jogador1} vs ${partidas[6].jogador2} — Vencedor: ${partidas[6].vencedor}` : `${vencedorSemi1} vs ${vencedorSemi2}`;
+
+  container.innerHTML = `
+    <div class="round">
+      <h3>Quartas de Final</h3>
+      <div class="matchup"><span>${p1}</span></div>
+      <div class="matchup"><span>${p2}</span></div>
+      <div class="matchup"><span>${p3}</span></div>
+      <div class="matchup"><span>${p4}</span></div>
+    </div>
+    <div class="round">
+      <h3>Semifinais</h3>
+      <div class="matchup"><span>${semi1}</span></div>
+      <div class="matchup"><span>${semi2}</span></div>
+    </div>
+    <div class="round">
+      <h3>Final</h3>
+      <div class="matchup"><span>${finalTexto}</span></div>
+    </div>
+  `;
 }
