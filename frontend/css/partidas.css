@@ -1,8 +1,3 @@
-/* =========================================================
-   MINHAS-PARTIDAS.CSS — Página pessoal de partidas
-   ========================================================= */
-
-/* ===== WRAPPER ===== */
 .partidas-wrapper {
     display: block;
     width: 100%;
@@ -13,7 +8,6 @@
     box-sizing: border-box;
 }
 
-/* ===== TÍTULO PRINCIPAL ===== */
 h1.titulo-principal {
     display: block;
     width: 100%;
@@ -39,7 +33,6 @@ h1.titulo-principal::after {
     border-radius: 2px;
 }
 
-/* ===== SUBTÍTULO ===== */
 p.subtitulo {
     display: block;
     width: 100%;
@@ -59,7 +52,6 @@ p.subtitulo em {
     text-shadow: 0 0 10px rgba(168, 39, 255, 0.5);
 }
 
-/* ===== DESTAQUE: PRÓXIMA PARTIDA ===== */
 .proxima-partida {
     background: rgba(18, 10, 28, 0.85);
     border: 1px solid rgba(168, 39, 255, 0.5);
@@ -162,7 +154,6 @@ p.subtitulo em {
     box-shadow: 0 0 25px rgba(168, 39, 255, 0.8);
 }
 
-/* ===== FILTROS ===== */
 .filtros {
     display: flex;
     justify-content: center;
@@ -197,7 +188,6 @@ p.subtitulo em {
     box-shadow: 0 0 15px rgba(168, 39, 255, 0.6);
 }
 
-/* ===== GRADE DE PARTIDAS ===== */
 section.grade-partidas {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -209,7 +199,6 @@ section.grade-partidas {
     box-sizing: border-box;
 }
 
-/* ===== CARD ===== */
 div.partida-card {
     display: flex;
     flex-direction: column;
@@ -221,7 +210,6 @@ div.partida-card {
     margin: 0;
 }
 
-/* Número */
 div.partida-card .card-numero {
     font-family: 'Orbitron', sans-serif;
     font-size: 0.85rem;
@@ -231,7 +219,6 @@ div.partida-card .card-numero {
     margin-bottom: 15px;
 }
 
-/* Quadrado */
 div.partida-card .card-quadrado {
     width: 100%;
     aspect-ratio: 1 / 1;
@@ -252,7 +239,6 @@ div.partida-card:hover .card-quadrado {
     box-shadow: 0 0 25px rgba(168, 39, 255, 0.55);
 }
 
-/* Nome do jogo */
 div.partida-card .card-jogo {
     font-family: 'Orbitron', sans-serif;
     font-size: 1.5rem;
@@ -265,7 +251,6 @@ div.partida-card .card-jogo {
     text-shadow: 0 0 10px rgba(168, 39, 255, 0.6);
 }
 
-/* Nome do campeonato */
 div.partida-card .card-titulo {
     font-family: 'Orbitron', sans-serif;
     margin: 22px 0 0 0;
@@ -279,7 +264,6 @@ div.partida-card .card-titulo {
     display: inline-block;
 }
 
-/* Info da partida (vs adversário) */
 div.partida-card .card-info {
     margin: 14px 0 0 0;
     font-family: 'Poppins', sans-serif;
@@ -293,7 +277,6 @@ div.partida-card .card-info strong {
     font-weight: 600;
 }
 
-/* Data */
 div.partida-card .card-data {
     margin: 6px 0 0 0;
     font-family: 'Poppins', sans-serif;
@@ -301,7 +284,6 @@ div.partida-card .card-data {
     color: #a898c8;
 }
 
-/* ===== STATUS ===== */
 .status {
     display: inline-block;
     margin-top: 14px;
@@ -332,7 +314,6 @@ div.partida-card .card-data {
     border: 1px solid rgba(80, 220, 120, 0.4);
 }
 
-/* ===== SETA ===== */
 .seta {
     position: fixed;
     top: 90px;
@@ -360,7 +341,6 @@ div.partida-card .card-data {
     transform: scale(1.1);
 }
 
-/* ===== RESPONSIVO ===== */
 @media (max-width: 900px) {
     .partidas-wrapper {
         padding: 40px 20px 80px;
