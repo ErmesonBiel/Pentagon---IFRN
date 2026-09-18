@@ -2,10 +2,16 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Pentagon - Ranking</title>
+  <title>Pentagon</title>
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body>
+<body class="page-ranking">
+  <div class="shape-container">
+      <div class="shape pentagon-spin"></div>
+      <div class="shape pentagon-orbit"></div>
+      <div class="shape pentagon-pulse"></div>
+  </div>
   <header class="navbar">
     <a href="dashboard.html" class="logo-container">Pentagon.</a>
     <nav>
@@ -16,22 +22,37 @@
     </nav>
   </header>
 
-  <main class="table-container">
-    <h2 class="page-title" style="text-align: left;">Tabela de Classificação</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Posição</th>
-          <th>Jogador</th>
-          <th>Pontos</th>
-          <th>Vitórias</th>
-          <th>Derrotas</th>
-          <th>Ações</th>
-        </tr>
-      </thead>
-      <tbody id="tabelaRankingBody">
-      </tbody>
-    </table>
+  <main class="dashboard">
+    <div class="shape-container">
+      <div class="shape pentagon-spin"></div>
+      <div class="shape pentagon-orbit"></div>
+      <div class="shape pentagon-pulse"></div>
+    </div>
+
+    <div class="dashboard-content">
+      <header class="ranking-header">
+        <h1 class="page-title-cyber">CLASSIFICAÇÃO</h1>
+        <div class="cyber-line"></div>
+      </header>
+
+      <div class="table-container">
+        <h2>Tabela de Classificação</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Posição</th>
+              <th>Jogador</th>
+              <th>Pontos</th>
+              <th>Vitórias</th>
+              <th>Derrotas</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tabelaRankingBody">
+          </tbody>
+        </table>
+      </div>
+    </div>
   </main>
 
   <script src="js/mockData.js"></script>

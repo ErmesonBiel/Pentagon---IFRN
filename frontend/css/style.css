@@ -1,5 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Poppins:wght@300;400;600&display=swap');
 
+/* --- 1. ATIVAR TRANSIÇÃO SUAVE ENTRE NAVEGAÇÃO DE PÁGINAS HTML --- */
+@view-transition {
+  navigation: auto;
+}
+
 :root {
   --bg-dark: #08020f;
   --purple-primary: #a827ff;
@@ -24,9 +29,10 @@ body {
     radial-gradient(circle at 10% 90%, rgba(168, 39, 255, 0.35) 0%, transparent 40%),
     radial-gradient(circle at 90% 90%, rgba(168, 39, 255, 0.4) 0%, transparent 45%);
   background-attachment: fixed;
+  overflow-x: hidden;
 }
 
-
+/* --- NAVBAR --- */
 .navbar {
   background-color: #ffffff;
   color: #000;
@@ -36,6 +42,8 @@ body {
   padding: 15px 50px;
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
+  position: relative;
+  z-index: 10;
 }
 
 .logo-container {
@@ -62,9 +70,9 @@ body {
   border-bottom: 2px solid var(--purple-primary);
 }
 
+/* --- DASHBOARD & LAYOUT --- */
 .dashboard {
   position: relative;
-  overflow: hidden;
   min-height: 100vh;
   padding: 60px 80px;
 }
@@ -72,6 +80,18 @@ body {
 .dashboard-content {
   position: relative;
   z-index: 2;
+  animation: slidePageContent 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+@keyframes slidePageContent {
+  0% {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 .title-pentagon {
@@ -91,76 +111,143 @@ body {
   color: #e2d9f3;
 }
 
+/* --- CAMADA DOS PENTÁGONOS --- */
 .shape-container {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   pointer-events: none;
   z-index: 1;
+  perspective: 1200px;
 }
 
+/* Base dos polígonos */
 .shape {
   position: absolute;
   clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
   pointer-events: none;
+  will-change: top, left, transform;
+  transition: all 1.2s cubic-bezier(0.25, 1, 0.3, 1);
 }
 
+/* --- IDENTIFICADORES DE TRANSIÇÃO VIEW-TRANSITION (ESSENCIAL) --- */
 .pentagon-spin {
+  view-transition-name: pentagon-main;
   width: 380px;
   height: 380px;
-  right: -50px;
-  bottom: -50px;
-  background: linear-gradient(135deg, rgba(168, 39, 255, 0.25), rgba(107, 0, 215, 0.05));
-  filter: drop-shadow(0 0 25px rgba(168, 39, 255, 0.4));
-  animation: continuousSpin 20s linear infinite;
+  background: linear-gradient(135deg, rgba(168, 39, 255, 0.28), rgba(107, 0, 215, 0.05));
+  filter: drop-shadow(0 0 30px rgba(168, 39, 255, 0.4));
+  animation: floatContinuous1 8s ease-in-out infinite alternate;
 }
 
 .pentagon-orbit {
-  width: 140px;
-  height: 140px;
-  right: 18%;
-  top: 20%;
-  background: rgba(168, 39, 255, 0.08);
+  view-transition-name: pentagon-second;
+  width: 150px;
+  height: 150px;
+  background: rgba(168, 39, 255, 0.1);
   border: 1px solid rgba(168, 39, 255, 0.4);
-  animation: orbitMotion 10s ease-in-out infinite alternate;
+  animation: floatContinuous2 6s ease-in-out infinite alternate;
 }
 
 .pentagon-pulse {
+  view-transition-name: pentagon-third;
   width: 220px;
   height: 220px;
+  background: rgba(107, 0, 215, 0.15);
+  border: 1px solid rgba(168, 39, 255, 0.25);
+  animation: floatContinuous3 10s ease-in-out infinite alternate;
+}
+
+/* --- ANIMAÇÕES DE FLUTUAÇÃO CONSTANTE (NUNCA FICAM PARADOS) --- */
+@keyframes floatContinuous1 {
+  0% { transform: translateY(0px) rotate(0deg); }
+  100% { transform: translateY(-25px) rotate(8deg); }
+}
+
+@keyframes floatContinuous2 {
+  0% { transform: translateY(0px) rotate(0deg) scale(1); }
+  100% { transform: translateY(20px) rotate(-12deg) scale(1.08); }
+}
+
+@keyframes floatContinuous3 {
+  0% { transform: translateY(0px) rotate(0deg); }
+  100% { transform: translateY(-18px) rotate(15deg); }
+}
+
+/* =========================================================
+   POSIÇÕES ESPECÍFICAS DE CADA PÁGINA
+   ========================================================= */
+
+/* 1. PÁGINA INICIAL / DASHBOARD (body.page-home ou sem classe) */
+body:not([class*="page-"]) .pentagon-spin,
+body.page-home .pentagon-spin {
+  top: 55%;
+  left: 72%;
+}
+
+body:not([class*="page-"]) .pentagon-orbit,
+body.page-home .pentagon-orbit {
+  top: 12%;
+  left: 75%;
+}
+
+body:not([class*="page-"]) .pentagon-pulse,
+body.page-home .pentagon-pulse {
+  top: 65%;
+  left: 5%;
+}
+
+/* 2. PÁGINA RANKING (body.page-ranking) */
+body.page-ranking .pentagon-spin {
+  top: -80px;
+  left: -60px;
+}
+
+body.page-ranking .pentagon-orbit {
+  top: 70%;
   left: 8%;
-  bottom: 12%;
-  background: rgba(107, 0, 215, 0.12);
-  border: 1px solid rgba(168, 39, 255, 0.2);
-  animation: pulseGlow 4s ease-in-out infinite alternate;
 }
 
-
-@keyframes continuousSpin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+body.page-ranking .pentagon-pulse {
+  top: 10%;
+  left: 82%;
 }
 
-@keyframes orbitMotion {
-  0% { transform: translate(0, 0) rotate(0deg); }
-  50% { transform: translate(-30px, 40px) rotate(45deg); }
-  100% { transform: translate(20px, -20px) rotate(-15deg); }
+/* 3. PÁGINA PARTIDAS / CAMPEONATOS (body.page-matches) */
+body.page-matches .pentagon-spin {
+  top: 25%;
+  left: 42%;
 }
 
-@keyframes pulseGlow {
-  0% {
-    transform: scale(0.9) rotate(-10deg);
-    filter: drop-shadow(0 0 5px rgba(168, 39, 255, 0.2));
-  }
-  100% {
-    transform: scale(1.15) rotate(15deg);
-    filter: drop-shadow(0 0 25px rgba(168, 39, 255, 0.6));
-  }
+body.page-matches .pentagon-orbit {
+  top: 80%;
+  left: 85%;
 }
 
+body.page-matches .pentagon-pulse {
+  top: -50px;
+  left: 20%;
+}
 
+/* 4. PÁGINA PERFIL (body.page-profile) */
+body.page-profile .pentagon-spin {
+  top: 70%;
+  left: -100px;
+}
+
+body.page-profile .pentagon-orbit {
+  top: 15%;
+  left: 18%;
+}
+
+body.page-profile .pentagon-pulse {
+  top: 50%;
+  left: 85%;
+}
+
+/* --- CARTÕES --- */
 .cards-grid {
   display: flex;
   gap: 25px;
@@ -180,7 +267,6 @@ body {
   color: white;
   position: relative;
   border-radius: 20px; 
-  
   transition: all 0.3s ease-in-out;
 }
 
@@ -193,6 +279,7 @@ body {
   height: 15px;
   background: var(--purple-primary);
   box-shadow: 0 0 10px var(--purple-primary);
+  border-top-right-radius: 18px;
 }
 
 .card:hover {
@@ -237,91 +324,40 @@ body {
   line-height: 1.3;
 }
 
-
-.auth-container, .form-container {
-  max-width: 450px;
-  margin: 50px auto;
+/* --- CABEÇALHO E FORMULÁRIOS --- */
+.ranking-header {
   text-align: center;
+  margin-bottom: 40px;
 }
 
-.auth-container h2, .page-title {
-  font-size: 2.2rem;
-  margin-bottom: 25px;
-  color: var(--text-white);
+.page-title-cyber {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 3rem;
+  font-weight: 900;
+  letter-spacing: 3px;
+  color: #ffffff;
+  text-transform: uppercase;
+  text-shadow: 0 0 15px rgba(168, 39, 255, 0.6);
 }
 
-.input-group {
-  text-align: left;
-  margin-bottom: 15px;
+.cyber-line {
+  width: 80px;
+  height: 4px;
+  background: var(--purple-primary);
+  margin: 15px auto;
+  border-radius: 2px;
+  box-shadow: 0 0 10px var(--purple-primary);
 }
 
-.input-group label {
-  display: block;
-  font-size: 0.8rem;
-  color: #c4b5fd;
-  margin-bottom: 5px;
-}
-
-.input-group input, .input-group select {
-  width: 100%;
-  padding: 12px 18px;
-  background-color: var(--input-bg);
-  border: 1px solid #2d2a3a;
-  border-radius: 25px;
-  color: #fff;
-  outline: none;
-}
-
-.input-row {
-  display: flex;
-  gap: 15px;
-}
-
-.btn-primary {
-  width: 100%;
-  padding: 12px;
-  background: linear-gradient(90deg, #a827ff, #8b00ff);
-  border: none;
-  border-radius: 25px;
-  color: white;
-  font-weight: bold;
-  cursor: pointer;
-  margin-top: 10px;
-}
-
-.btn-secondary {
-  display: block;
-  width: 100%;
-  padding: 12px;
-  background-color: #ffffff;
-  color: #000;
-  text-decoration: none;
-  border-radius: 25px;
-  font-weight: bold;
-  margin-top: 10px;
-}
-
-.divider {
-  margin: 15px 0;
-  border-bottom: 1px solid #333;
-  line-height: 0.1em;
-}
-
-.divider span {
-  background: var(--bg-dark);
-  padding: 0 10px;
-  color: #888;
-  font-size: 0.8rem;
-}
-
-/* --- TABELAS --- */
 .table-container {
-  max-width: 900px;
-  margin: 40px auto;
-  background: var(--card-bg);
-  border-radius: 15px;
-  padding: 20px;
+  max-width: 950px;
+  margin: 0 auto;
+  background: linear-gradient(145deg, rgba(28, 15, 45, 0.9), rgba(12, 5, 20, 0.95));
+  border-radius: 20px;
+  padding: 30px;
   border: 1px solid rgba(168, 39, 255, 0.3);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
 }
 
 table {
@@ -330,21 +366,30 @@ table {
 }
 
 th, td {
-  padding: 12px 15px;
+  padding: 16px 15px;
   text-align: left;
-  border-bottom: 1px solid #2d2a3a;
+  border-bottom: 1px solid rgba(168, 39, 255, 0.15);
 }
 
 th {
   color: var(--purple-primary);
   font-family: 'Orbitron', sans-serif;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
 }
 
 .btn-del {
   background: #ff3366;
   border: none;
   color: white;
-  padding: 5px 10px;
-  border-radius: 10px;
+  padding: 8px 16px;
+  border-radius: 12px;
+  font-weight: 600;
   cursor: pointer;
+  transition: transform 0.2s, background-color 0.2s;
+}
+
+.btn-del:hover {
+  background: #e02452;
+  transform: scale(1.05);
 }

@@ -2,10 +2,18 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pentagon - Perfil</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body class="page-profile">
+
+  <div class="shape-container">
+    <div class="shape pentagon-spin"></div>
+    <div class="shape pentagon-orbit"></div>
+    <div class="shape pentagon-pulse"></div>
+  </div>
+
   <header class="navbar">
     <a href="dashboard.html" class="logo-container">Pentagon.</a>
     <nav>
@@ -16,28 +24,43 @@
     </nav>
   </header>
 
-  <main class="table-container" style="text-align: center;">
-    <h2 id="userNome" class="page-title">Carregando...</h2>
-    <p id="userEmail" style="color: #a827ff; margin-bottom: 30px;">email@exemplo.com</p>
+  <main class="dashboard">
+    <div class="dashboard-content">
+      
+      <div class="ranking-header">
+        <h1 class="page-title-cyber">MEU PERFIL</h1>
+        <div class="cyber-line"></div>
+      </div>
 
-    <div style="display: flex; justify-content: space-around; background: rgba(0,0,0,0.5); padding: 20px; border-radius: 15px;">
-      <div>
-        <h3>Status da Conta</h3>
-        <p style="color: #4ade80;">Ativo</p>
+      <div class="table-container profile-container">
+        
+        <div class="profile-header-info">
+          <div class="avatar-placeholder">👤</div>
+          <h2 id="userNome" class="user-name">Carregando...</h2>
+          <p id="userEmail" class="user-email">email@exemplo.com</p>
+        </div>
+
+        <div class="profile-status-grid">
+          <div class="status-box">
+            <span class="status-label">Status da Conta</span>
+            <span class="status-value status-active">Ativo</span>
+          </div>
+          <div class="status-box">
+            <span class="status-label">Tipo de Acesso</span>
+            <span class="status-value">Organizador / Jogador</span>
+          </div>
+        </div>
+
+        <div class="history-section">
+          <h3 class="history-title">Histórico de Partidas Recentes</h3>
+          <ul id="historicoPerfil" class="history-list">
+            <li class="history-item">Carregando histórico...</li>
+          </ul>
+        </div>
+
       </div>
-      <div>
-        <h3>Tipo de Acesso</h3>
-        <p>Organizador / Jogador</p>
-      </div>
+
     </div>
-
-    <section class="card" style="text-align: left; background: rgba(0,0,0,0.3); padding: 20px; border-radius: 15px;">
-      <h3 style="margin-bottom: 15px;">Histórico de Partidas Recentes</h3>
-      <ul id="historicoPerfil" style="list-style: none; padding: 0;">
-        <li style="padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">Carregando histórico...</li>
-      </ul>
-    </section>
-
   </main>
 
   <script src="js/mockData.js"></script>

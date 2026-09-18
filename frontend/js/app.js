@@ -116,26 +116,43 @@ document.addEventListener("DOMContentLoaded", () => {
     renderizarChaveamento();
   }
 
+  // --- DADOS DO PERFIL (CORRIGIDO) ---
   const userNomeElement = document.getElementById("userNome");
-  if (userNomeElement) {
+  const userEmailElement = document.getElementById("userEmail");
+
+  if (userNomeElement || userEmailElement) {
     const userLogado = JSON.parse(localStorage.getItem("usuarioLogado")) || { nome: "Maria Vitória", email: "maria@gmail.com" };
-    userNomeElement.innerText = userLogado.nome;
-    document.getElementById("userEmail").innerText = userLogado.email;
+    if (userNomeElement) userNomeElement.innerText = userLogado.nome || "Maria Vitória";
+    if (userEmailElement) userEmailElement.innerText = userLogado.email || "maria@gmail.com";
   }
 
+  // --- HISTÓRICO DO PERFIL (CORRIGIDO) ---
   const historicoList = document.getElementById("historicoPerfil");
   if (historicoList) {
     const partidas = JSON.parse(localStorage.getItem("pentagon_partidas")) || [];
     historicoList.innerHTML = "";
 
-    if (partidas.length === 0) {
-      historicoList.innerHTML = "<li>Nenhuma partida registrada ainda.</li>";
+    if (!partidas || partidas.length === 0) {
+      historicoList.innerHTML = '<li class="history-item">Nenhuma partida registrada ainda.</li>';
     } else {
       partidas.slice(-5).reverse().forEach(p => {
         const li = document.createElement("li");
-        li.style.padding = "8px 0";
-        li.style.borderBottom = "1px solid rgba(255,255,255,0.1)";
-        li.innerHTML = `<strong>${p.jogador1}</strong> (${p.placar}) <strong>${p.jogador2}</strong> — Vencedor: <span style="color: #4ade80;">${p.vencedor}</span>`;
+        li.className = "history-item";
+        
+        // Trata os valores para evitar renderizar 'undefined'
+        const j1 = p.jogador1 || 'Jogador 1';
+        const j2 = p.jogador2 || 'Jogador 2';
+        const placar = p.placar ? p.placar : 'vs';
+        const vencedor = p.vencedor || 'N/A';
+
+        li.innerHTML = `
+          <div class="history-match">
+            <span class="player">${j1}</span>
+            <span class="score">${placar}</span>
+            <span class="player">${j2}</span>
+          </div>
+          <span class="winner-tag">Vencedor: <strong>${vencedor}</strong></span>
+        `;
         historicoList.appendChild(li);
       });
     }
@@ -144,6 +161,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function renderizarRanking() {
   const tbody = document.getElementById("tabelaRankingBody");
+  if (!tbody) return;
+  
   const ranking = JSON.parse(localStorage.getItem("pentagon_ranking")) || [];
 
   ranking.sort((a, b) => b.pontos - a.pontos);
