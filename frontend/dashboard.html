@@ -2,37 +2,65 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Pentagon</title>
+  <title>Pentagon - Painel</title>
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/partidas.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
   <main class="dashboard">
-    <h1 class="title-pentagon">Pentagon.</h1>
-    <p class="subtitle">Sua jornada rumo ao topo começa aqui.</p>
+    <div class="shape-container">
+      <div class="shape pentagon-spin"></div>
+      <div class="shape pentagon-orbit"></div>
+      <div class="shape pentagon-pulse"></div>
+    </div>
 
-    <h3 style="margin-bottom: 20px;">Explore nossas opções</h3>
+    <div class="dashboard-content">
+      <h1 class="title-pentagon">Pentagon.</h1>
+      <p class="subtitle">Sua jornada rumo ao topo começa aqui.</p>
 
-    <div class="cards-grid">
-      <a href="campeonatos.html" class="card">
-        <span class="card-icon">+</span>
-        <p>Campeonatos Ativos</p>
-      </a>
-      <a href="ranking.html" class="card">
-        <span class="card-icon">+</span>
-        <p>Rank</p>
-      </a>
-      <a href="partidas.html" class="card">
-        <span class="card-icon">+</span>
-        <p>Minhas Partidas</p>
-      </a>
-      <a href="perfil.html" class="card">
-        <span class="card-icon">+</span>
-        <p>Perfil</p>
-      </a>
-      <a href="index.html" class="card">
-        <p>Menu</p>
-      </a>
+      <h3 style="margin-bottom: 25px;">Explore nossas opções</h3>
+
+      <div class="cards-grid">
+        <a href="campeonatos.html" class="card">
+          <div class="card-header">
+            <i class="fa-solid fa-trophy card-icon-main"></i>
+            <span class="card-icon">+</span>
+          </div>
+          <p>Campeonatos Ativos</p>
+        </a>
+
+        <a href="ranking.html" class="card">
+          <div class="card-header">
+            <i class="fa-solid fa-ranking-star card-icon-main"></i>
+            <span class="card-icon">+</span>
+          </div>
+          <p>Rank</p>
+        </a>
+
+        <a href="partidas.html" class="card">
+          <div class="card-header">
+            <i class="fa-solid fa-gamepad card-icon-main"></i>
+            <span class="card-icon">+</span>
+          </div>
+          <p>Minhas Partidas</p>
+        </a>
+
+        <a href="perfil.html" class="card">
+          <div class="card-header">
+            <i class="fa-solid fa-user-ninja card-icon-main"></i>
+            <span class="card-icon">+</span>
+          </div>
+          <p>Perfil</p>
+        </a>
+
+        <a href="index.html" class="card">
+          <div class="card-header">
+            <i class="fa-solid fa-bars card-icon-main"></i>
+          </div>
+          <p>Menu</p>
+        </a>
+      </div>
     </div>
   </main>
 </body>
