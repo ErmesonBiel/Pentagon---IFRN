@@ -1,45 +1,108 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Pentagon - Registrar Partida</title>
-  <link rel="stylesheet" href="css/style.css">
+    <meta charset="UTF-8">
+    <title>Pentagon • Minhas Partidas</title>
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/partidas.css">
 </head>
 <body>
-  <header class="navbar">
-    <a href="dashboard.html" class="logo-container">Pentagon.</a>
-    <nav>
-      <a href="dashboard.html">PAINEL</a>
-      <a href="ranking.html">RANKING</a>
-      <a href="partidas.html" class="active">PARTIDAS</a>
-      <a href="perfil.html">PERFIL</a>
-    </nav>
-  </header>
 
-  <main class="form-container">
-    <h2 class="page-title">Registrar Resultado</h2>
-    <form id="formPartida">
-      <div class="input-group">
-        <label>Jogador 1</label>
-        <input type="text" id="j1" placeholder="Maria Vitória" required>
-      </div>
-      <div class="input-group">
-        <label>Jogador 2</label>
-        <input type="text" id="j2" placeholder="Emerson Gabriel" required>
-      </div>
-      <div class="input-group">
-        <label>Vencedor (Definição Única - RN02)</label>
-        <input type="text" id="vencedor" placeholder="Nome do Vencedor" required>
-      </div>
-      <div class="input-group">
-        <label>Placar</label>
-        <input type="text" id="placar" placeholder="2 x 1" required>
-      </div>
-      <button type="submit" class="btn-primary">Salvar e Atualizar Ranking</button>
-    </form>
-  </main>
+    <!-- NAVBAR -->
+    <header class="navbar">
+        <a href="painel.html" class="logo-container">
+            <span>Pentagon.</span>
+        </a>
+        <nav>
+            <a href="painel.html">PAINEL</a>
+            <a href="ranking.html">RANKING</a>
+            <a href="partidas.html" class="active">PARTIDAS</a>
+            <a href="perfil.html">PERFIL</a>
+        </nav>
+    </header>
 
-  <script src="js/mockData.js"></script>
-  <script src="js/app.js"></script>
+    <!-- SETA PARA VOLTAR AOS CAMPEONATOS -->
+    <a href="campeonatos.html" class="seta" title="Ver Campeonatos Ativos">←</a>
+
+    <!-- CONTEÚDO -->
+    <main class="partidas-wrapper">
+
+        <!-- TÍTULO PRINCIPAL -->
+        <h1 class="titulo-principal">Minhas Partidas</h1>
+
+        <!-- SUBTÍTULO -->
+        <p class="subtitulo">
+            Acompanhe seus jogos e <em>resultados</em>.
+        </p>
+
+        <!-- DESTAQUE: PRÓXIMA PARTIDA -->
+        <section class="proxima-partida">
+            <span class="tag-proxima">🔥 Próxima Partida</span>
+            <h2>Copa Valorant — Edição Verão</h2>
+            <div class="confronto">
+                <div class="time">
+                    <span class="time-label">Você</span>
+                    <span class="time-nome">Maria Vitória</span>
+                </div>
+                <span class="vs">VS</span>
+                <div class="time">
+                    <span class="time-label">Adversário</span>
+                    <span class="time-nome">Os Feras</span>
+                </div>
+            </div>
+            <p class="data-hora">📅 22/10 às 20h</p>
+            <a href="#" class="btn-entrar">Entrar na Sala</a>
+        </section>
+
+        <!-- FILTROS -->
+        <div class="filtros">
+            <button class="filtro ativo">Todas</button>
+            <button class="filtro">Agendadas</button>
+            <button class="filtro">Pendentes</button>
+            <button class="filtro">Finalizadas</button>
+        </div>
+
+        <!-- GRADE DE PARTIDAS -->
+        <section class="grade-partidas">
+
+            <div class="partida-card">
+                <div class="card-numero">01</div>
+                <div class="card-quadrado">
+                    <span class="card-jogo">CS2</span>
+                </div>
+                <h3 class="card-titulo">Campeonato CS2 Amador</h3>
+                <p class="card-info">⚔️ vs <strong>Team Alpha</strong></p>
+                <p class="card-data">📅 25/10 às 19h</p>
+                <span class="status agendado">Agendado</span>
+            </div>
+
+            <div class="partida-card">
+                <div class="card-numero">02</div>
+                <div class="card-quadrado">
+                    <span class="card-jogo">Rocket League</span>
+                </div>
+                <h3 class="card-titulo">Liga Rocket League</h3>
+                <p class="card-info">⚔️ Adversário <strong>aguardando</strong></p>
+                <p class="card-data">📅 28/10 às 20h</p>
+                <span class="status pendente">Pendente</span>
+            </div>
+
+            <div class="partida-card">
+                <div class="card-numero">03</div>
+                <div class="card-quadrado">
+                    <span class="card-jogo">Valorant</span>
+                </div>
+                <h3 class="card-titulo">Copa Valorant - Verão</h3>
+                <p class="card-info">🏆 Vitória <strong>2 x 1</strong></p>
+                <p class="card-data">📅 15/10 • Finalizada</p>
+                <span class="status finalizado">Finalizada</span>
+            </div>
+
+        </section>
+
+    </main>
+    <script src="js/mockData.js"></script>
+    <script src="js/app.js"></script>
 </body>
 </html>
