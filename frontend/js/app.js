@@ -93,6 +93,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const j2 = document.getElementById("j2").value.trim();
       const vencedor = document.getElementById("vencedor").value.trim();
       const placar = document.getElementById("placar").value.trim();
+      const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado")) || { nome: "oi" };
 
       if (vencedor !== j1 && vencedor !== j2) {
         alert("Erro (RN02): O vencedor deve ser um dos participantes da partida!");
@@ -100,7 +101,14 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       const partidas = JSON.parse(localStorage.getItem("pentagon_partidas")) || [];
-      partidas.push({ id: Date.now(), jogador1: j1, jogador2: j2, vencedor, placar });
+      partidas.push({ 
+        id: Date.now(), 
+        jogador1: j1, 
+        jogador2: j2, 
+        vencedor, 
+        placar,
+        organizador: usuarioLogado.nome 
+      });
       localStorage.setItem("pentagon_partidas", JSON.stringify(partidas));
 
       atualizarPontos(vencedor);
@@ -116,47 +124,79 @@ document.addEventListener("DOMContentLoaded", () => {
     renderizarChaveamento();
   }
 
-  // --- DADOS DO PERFIL (CORRIGIDO) ---
   const userNomeElement = document.getElementById("userNome");
   const userEmailElement = document.getElementById("userEmail");
 
   if (userNomeElement || userEmailElement) {
-    const userLogado = JSON.parse(localStorage.getItem("usuarioLogado")) || { nome: "Maria Vitória", email: "maria@gmail.com" };
-    if (userNomeElement) userNomeElement.innerText = userLogado.nome || "Maria Vitória";
-    if (userEmailElement) userEmailElement.innerText = userLogado.email || "maria@gmail.com";
+    const userLogado = JSON.parse(localStorage.getItem("usuarioLogado")) || { nome: "oi", email: "oi@gmail.com" };
+    if (userNomeElement) userNomeElement.innerText = userLogado.nome || "oi";
+    if (userEmailElement) userEmailElement.innerText = userLogado.email || "oi@gmail.com";
   }
 
-  // --- HISTÓRICO DO PERFIL (CORRIGIDO) ---
-  const historicoList = document.getElementById("historicoPerfil");
-  if (historicoList) {
+  const listJogador = document.getElementById("historicoJogador");
+  const listOrganizador = document.getElementById("historicoOrganizador");
+
+  if (listJogador || listOrganizador) {
+    const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado")) || { nome: "oi" };
     const partidas = JSON.parse(localStorage.getItem("pentagon_partidas")) || [];
-    historicoList.innerHTML = "";
+    const nomeUsuario = usuarioLogado.nome ? usuarioLogado.nome.toLowerCase() : "";
 
-    if (!partidas || partidas.length === 0) {
-      historicoList.innerHTML = '<li class="history-item">Nenhuma partida registrada ainda.</li>';
-    } else {
-      partidas.slice(-5).reverse().forEach(p => {
-        const li = document.createElement("li");
-        li.className = "history-item";
+    const criarItemPartida = (p) => {
+      const li = document.createElement("li");
+      li.className = "history-item";
+      
+      const j1 = p.jogador1 || 'Jogador 1';
+      const j2 = p.jogador2 || 'Jogador 2';
+      const placar = p.placar ? p.placar : 'vs';
+      const vencedor = p.vencedor || 'N/A';
+
+      li.innerHTML = `
+        <div class="history-match">
+          <span class="player">${j1}</span>
+          <span class="score">${placar}</span>
+          <span class="player">${j2}</span>
+        </div>
+        <span class="winner-tag">Vencedor: <strong>${vencedor}</strong></span>
+      `;
+      return li;
+    };
+
+    if (listJogador) {
+      listJogador.innerHTML = "";
+      const partidasComoJogador = partidas.filter(p => 
+        (p.jogador1 && p.jogador1.toLowerCase() === nomeUsuario) || 
+        (p.jogador2 && p.jogador2.toLowerCase() === nomeUsuario)
+      );
+
+      if (partidasComoJogador.length === 0) {
+        listJogador.innerHTML = '<li class="history-item">Nenhuma partida jogada recentemente.</li>';
+      } else {
+        partidasComoJogador.slice(-5).reverse().forEach(p => {
+          listJogador.appendChild(criarItemPartida(p));
+        });
+      }
+    }
+
+    if (listOrganizador) {
+      listOrganizador.innerHTML = "";
+      const partidasMinistradas = partidas.filter(p => {
+        const eOrganizador = p.organizador ? p.organizador.toLowerCase() === nomeUsuario : true;
+        const eJogador = (p.jogador1 && p.jogador1.toLowerCase() === nomeUsuario) || 
+                         (p.jogador2 && p.jogador2.toLowerCase() === nomeUsuario);
         
-        // Trata os valores para evitar renderizar 'undefined'
-        const j1 = p.jogador1 || 'Jogador 1';
-        const j2 = p.jogador2 || 'Jogador 2';
-        const placar = p.placar ? p.placar : 'vs';
-        const vencedor = p.vencedor || 'N/A';
-
-        li.innerHTML = `
-          <div class="history-match">
-            <span class="player">${j1}</span>
-            <span class="score">${placar}</span>
-            <span class="player">${j2}</span>
-          </div>
-          <span class="winner-tag">Vencedor: <strong>${vencedor}</strong></span>
-        `;
-        historicoList.appendChild(li);
+        return eOrganizador && !eJogador;
       });
+
+      if (partidasMinistradas.length === 0) {
+        listOrganizador.innerHTML = '<li class="history-item">Nenhuma partida ministrada por você.</li>';
+      } else {
+        partidasMinistradas.slice(-5).reverse().forEach(p => {
+          listOrganizador.appendChild(criarItemPartida(p));
+        });
+      }
     }
   }
+
 });
 
 function renderizarRanking() {
