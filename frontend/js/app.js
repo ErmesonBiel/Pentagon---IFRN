@@ -239,3 +239,47 @@ function removerJogador(id) {
     location.reload();
   }
 }
+
+async function carregarIntegrantesDoServidor() {
+  try {
+    const resposta = await fetch('http://localhost:3000/integrantes');
+    const integrantes = await resposta.json();
+    
+    console.log("Integrantes carregados:", integrantes);
+    
+   } catch (erro) {
+    console.error("Erro ao buscar integrantes:", erro);
+  }
+}
+
+carregarIntegrantesDoServidor();
+
+async function carregarEExibirIntegrantes() {
+  try {
+    const resposta = await fetch('http://localhost:3000/integrantes');
+    const integrantes = await resposta.json();
+    
+    const container = document.getElementById('integrantes-container');
+
+    if (!container) return;
+
+    container.innerHTML = '';
+
+    integrantes.forEach(integrante => {
+      const card = document.createElement('div');
+      card.classList.add('integrantes-card');
+
+      card.innerHTML = `
+        <img src="${integrante.foto}" alt="${integrante.nome}" class="foto-equipe">
+        <span class="nome-integrante">${integrante.nome}</span>
+      `;
+
+      container.appendChild(card);
+    });
+
+  } catch (erro) {
+    console.error("Erro ao carregar os integrantes:", erro);
+  }
+}
+
+document.addEventListener("DOMContentLoaded", carregarEExibirIntegrantes);
