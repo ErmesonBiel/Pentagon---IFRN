@@ -19,7 +19,7 @@ h1.titulo-principal {
     color: #fff;
     text-align: center;
     margin: 0 auto 20px;
-    text-shadow: 0 0 20px rgba(168, 39, 255, 0.6);
+    text-shadow: 0 0 20px rgba(255, 39, 75, 0.6);
 }
 
 h1.titulo-principal::after {
@@ -27,8 +27,8 @@ h1.titulo-principal::after {
     display: block;
     width: 90px;
     height: 3px;
-    background: #a827ff;
-    box-shadow: 0 0 12px #a827ff;
+    background: var(--red-primary);
+    box-shadow: 0 0 12px var(--red-primary);
     margin: 20px auto 0;
     border-radius: 2px;
 }
@@ -39,7 +39,7 @@ p.subtitulo {
     font-family: 'Poppins', sans-serif;
     font-size: 1.05rem;
     font-weight: 300;
-    color: #c4b5fd;
+    color: #f3d9dc;
     text-align: center;
     margin: 0 auto 50px;
 }
@@ -48,26 +48,26 @@ p.subtitulo em {
     font-family: 'Orbitron', sans-serif;
     font-style: italic;
     font-weight: 700;
-    color: #a827ff;
-    text-shadow: 0 0 10px rgba(168, 39, 255, 0.5);
+    color: var(--red-primary);
+    text-shadow: 0 0 10px rgba(255, 39, 75, 0.5);
 }
 
 .proxima-partida {
-    background: rgba(18, 10, 28, 0.85);
-    border: 1px solid rgba(168, 39, 255, 0.5);
+    background: rgba(28, 10, 14, 0.85);
+    border: 1px solid rgba(255, 39, 75, 0.5);
     border-radius: 24px;
     padding: 35px 40px;
     margin: 0 auto 60px;
     max-width: 700px;
     text-align: center;
-    box-shadow: 0 0 30px rgba(168, 39, 255, 0.25);
+    box-shadow: 0 0 30px rgba(255, 39, 75, 0.25);
     position: relative;
 }
 
 .tag-proxima {
     display: inline-block;
-    background: rgba(168, 39, 255, 0.2);
-    color: #d8b8ff;
+    background: rgba(255, 39, 75, 0.2);
+    color: #f3d9dc;
     font-family: 'Orbitron', sans-serif;
     font-size: 0.75rem;
     font-weight: 700;
@@ -76,7 +76,7 @@ p.subtitulo em {
     padding: 6px 16px;
     border-radius: 20px;
     margin-bottom: 20px;
-    border: 1px solid rgba(168, 39, 255, 0.4);
+    border: 1px solid rgba(255, 39, 75, 0.4);
 }
 
 .proxima-partida h2 {
@@ -108,7 +108,7 @@ p.subtitulo em {
     font-size: 0.7rem;
     letter-spacing: 2px;
     text-transform: uppercase;
-    color: #c4b5fd;
+    color: #f3d9dc;
 }
 
 .confronto .time-nome {
@@ -122,21 +122,21 @@ p.subtitulo em {
     font-family: 'Orbitron', sans-serif;
     font-size: 1.6rem;
     font-weight: 900;
-    color: #a827ff;
-    text-shadow: 0 0 15px rgba(168, 39, 255, 0.8);
+    color: var(--red-primary);
+    text-shadow: 0 0 15px rgba(255, 39, 75, 0.8);
 }
 
 .data-hora {
     font-family: 'Poppins', sans-serif;
     font-size: 0.9rem;
-    color: #c4b5fd;
+    color: #f3d9dc;
     margin-bottom: 25px;
 }
 
 .btn-entrar {
     display: inline-block;
     padding: 12px 40px;
-    background: linear-gradient(90deg, #a827ff, #8b00ff);
+    background: linear-gradient(90deg, var(--red-primary), var(--red-glow));
     color: #fff;
     text-decoration: none;
     font-family: 'Orbitron', sans-serif;
@@ -146,12 +146,12 @@ p.subtitulo em {
     text-transform: uppercase;
     border-radius: 30px;
     transition: all 0.25s;
-    box-shadow: 0 0 15px rgba(168, 39, 255, 0.5);
+    box-shadow: 0 0 15px rgba(255, 39, 75, 0.5);
 }
 
 .btn-entrar:hover {
     transform: translateY(-2px);
-    box-shadow: 0 0 25px rgba(168, 39, 255, 0.8);
+    box-shadow: 0 0 25px rgba(255, 39, 75, 0.8);
 }
 
 .filtros {
@@ -164,8 +164,8 @@ p.subtitulo em {
 
 .filtro {
     background: transparent;
-    border: 1px solid rgba(168, 39, 255, 0.4);
-    color: #c4b5fd;
+    border: 1px solid rgba(255, 39, 75, 0.4);
+    color: #f3d9dc;
     font-family: 'Poppins', sans-serif;
     font-size: 0.8rem;
     font-weight: 600;
@@ -177,15 +177,15 @@ p.subtitulo em {
 }
 
 .filtro:hover {
-    border-color: #a827ff;
+    border-color: var(--red-primary);
     color: #fff;
 }
 
 .filtro.ativo {
-    background: #a827ff;
+    background: var(--red-primary);
     color: #fff;
-    border-color: #a827ff;
-    box-shadow: 0 0 15px rgba(168, 39, 255, 0.6);
+    border-color: var(--red-primary);
+    box-shadow: 0 0 15px rgba(255, 39, 75, 0.6);
 }
 
 section.grade-partidas {
@@ -215,15 +215,15 @@ div.partida-card .card-numero {
     font-size: 0.85rem;
     font-weight: 500;
     letter-spacing: 3px;
-    color: #c4b5fd;
+    color: #f3d9dc;
     margin-bottom: 15px;
 }
 
 div.partida-card .card-quadrado {
     width: 100%;
     aspect-ratio: 1 / 1;
-    background: rgba(18, 10, 28, 0.85);
-    border: 1px solid rgba(168, 39, 255, 0.4);
+    background: rgba(28, 10, 14, 0.85);
+    border: 1px solid rgba(255, 39, 75, 0.4);
     border-radius: 20px;
     display: flex;
     align-items: center;
@@ -235,8 +235,8 @@ div.partida-card .card-quadrado {
 
 div.partida-card:hover .card-quadrado {
     transform: translateY(-6px);
-    border-color: #a827ff;
-    box-shadow: 0 0 25px rgba(168, 39, 255, 0.55);
+    border-color: var(--red-primary);
+    box-shadow: 0 0 25px rgba(255, 39, 75, 0.55);
 }
 
 div.partida-card .card-jogo {
@@ -248,7 +248,7 @@ div.partida-card .card-jogo {
     text-transform: uppercase;
     text-align: center;
     line-height: 1.2;
-    text-shadow: 0 0 10px rgba(168, 39, 255, 0.6);
+    text-shadow: 0 0 10px rgba(255, 39, 75, 0.6);
 }
 
 div.partida-card .card-titulo {
@@ -259,7 +259,7 @@ div.partida-card .card-titulo {
     letter-spacing: 2px;
     text-transform: uppercase;
     color: #fff;
-    border-bottom: 1px solid #a827ff;
+    border-bottom: 1px solid var(--red-primary);
     padding-bottom: 6px;
     display: inline-block;
 }
@@ -268,7 +268,7 @@ div.partida-card .card-info {
     margin: 14px 0 0 0;
     font-family: 'Poppins', sans-serif;
     font-size: 0.85rem;
-    color: #c4b5fd;
+    color: #f3d9dc;
     line-height: 1.5;
 }
 
@@ -281,7 +281,7 @@ div.partida-card .card-data {
     margin: 6px 0 0 0;
     font-family: 'Poppins', sans-serif;
     font-size: 0.8rem;
-    color: #a898c8;
+    color: #d1b2b7;
 }
 
 .status {
@@ -320,7 +320,7 @@ div.partida-card .card-data {
     right: 30px;
     width: 45px;
     height: 45px;
-    background: rgba(168, 39, 255, 0.15);
+    background: rgba(255, 39, 75, 0.15);
     color: #fff;
     border-radius: 50%;
     display: flex;
@@ -329,15 +329,15 @@ div.partida-card .card-data {
     font-size: 20px;
     font-weight: bold;
     text-decoration: none;
-    border: 1px solid rgba(168, 39, 255, 0.5);
+    border: 1px solid rgba(255, 39, 75, 0.5);
     backdrop-filter: blur(8px);
     transition: all 0.25s;
     z-index: 100;
 }
 
 .seta:hover {
-    background: #a827ff;
-    box-shadow: 0 0 15px rgba(168, 39, 255, 0.7);
+    background: var(--red-primary);
+    box-shadow: 0 0 15px rgba(255, 39, 75, 0.7);
     transform: scale(1.1);
 }
 

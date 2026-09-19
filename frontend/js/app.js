@@ -1,6 +1,28 @@
 document.addEventListener("DOMContentLoaded", () => {
 
+  // --- CONTROLE DAS ABAS (ENTRAR / CRIAR CONTA) ---
+  const tabLogin = document.getElementById("tabLogin");
+  const tabCadastro = document.getElementById("tabCadastro");
+  const formLogin = document.getElementById("formLogin");
   const formCadastro = document.getElementById("formCadastro");
+
+  if (tabLogin && tabCadastro && formLogin && formCadastro) {
+    tabLogin.addEventListener("click", () => {
+      tabLogin.classList.add("active");
+      tabCadastro.classList.remove("active");
+      formLogin.classList.remove("hidden");
+      formCadastro.classList.add("hidden");
+    });
+
+    tabCadastro.addEventListener("click", () => {
+      tabCadastro.classList.add("active");
+      tabLogin.classList.remove("active");
+      formCadastro.classList.remove("hidden");
+      formLogin.classList.add("hidden");
+    });
+  }
+
+  // --- FORMULÁRIO DE CADASTRO ---
   if (formCadastro) {
     formCadastro.addEventListener("submit", (e) => {
       e.preventDefault();
@@ -24,6 +46,19 @@ document.addEventListener("DOMContentLoaded", () => {
       localStorage.setItem("usuarioLogado", JSON.stringify(usuarioLogado));
 
       alert("Conta criada com sucesso!");
+      window.location.href = "dashboard.html";
+    });
+  }
+
+  // --- FORMULÁRIO DE LOGIN ---
+  if (formLogin) {
+    formLogin.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const email = document.getElementById("loginEmail").value.trim();
+      const usuarioLogado = { nome: email.split("@")[0], email };
+      
+      localStorage.setItem("usuarioLogado", JSON.stringify(usuarioLogado));
       window.location.href = "dashboard.html";
     });
   }
@@ -75,7 +110,7 @@ document.addEventListener("DOMContentLoaded", () => {
       opt2.value = j2Val;
       opt2.textContent = j2Val;
       selectVencedor.appendChild(opt2);
-    }  
+    }   
   }
 
   if (selectJ1 && selectJ2) {

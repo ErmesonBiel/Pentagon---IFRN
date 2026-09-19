@@ -14,7 +14,7 @@ h1.titulo-principal {
     color: #fff;
     text-align: center;
     margin: 0 auto 20px;
-    text-shadow: 0 0 20px rgba(168, 39, 255, 0.6);
+    text-shadow: 0 0 20px rgba(255, 39, 75, 0.6);
     position: relative;
 }
 
@@ -23,8 +23,8 @@ h1.titulo-principal::after {
     display: block;
     width: 90px;
     height: 3px;
-    background: var(--purple-primary);
-    box-shadow: 0 0 12px var(--purple-primary);
+    background: var(--red-primary);
+    box-shadow: 0 0 12px var(--red-primary);
     margin: 20px auto 0;
     border-radius: 2px;
 }
@@ -33,7 +33,7 @@ p.subtitulo {
     font-family: 'Poppins', sans-serif;
     font-size: 1.05rem;
     font-weight: 300;
-    color: #c4b5fd;
+    color: #f3d9dc;
     text-align: center;
     margin-bottom: 50px;
     letter-spacing: 0.5px;
@@ -43,8 +43,8 @@ p.subtitulo em {
     font-family: 'Orbitron', sans-serif;
     font-style: italic;
     font-weight: 700;
-    color: var(--purple-primary);
-    text-shadow: 0 0 10px rgba(168, 39, 255, 0.5);
+    color: var(--red-primary);
+    text-shadow: 0 0 10px rgba(255, 39, 75, 0.5);
 }
 
 section.grade-campeonatos {
@@ -63,7 +63,7 @@ div.campeonato-card {
     align-items: center;
     text-align: center;
     background: var(--card-bg);
-    border: 1px solid rgba(168, 39, 255, 0.4);
+    border: 1px solid rgba(255, 39, 75, 0.4);
     border-radius: 20px;
     padding: 25px;
     width: 280px;
@@ -72,8 +72,8 @@ div.campeonato-card {
 
 div.campeonato-card:hover {
     transform: translateY(-6px);
-    border-color: var(--purple-primary);
-    box-shadow: 0 0 25px rgba(168, 39, 255, 0.55);
+    border-color: var(--red-primary);
+    box-shadow: 0 0 25px rgba(255, 39, 75, 0.55);
 }
 
 .card-numero {
@@ -81,15 +81,15 @@ div.campeonato-card:hover {
     font-size: 0.85rem;
     font-weight: 500;
     letter-spacing: 3px;
-    color: #c4b5fd;
+    color: #f3d9dc;
     margin-bottom: 15px;
 }
 
 .card-quadrado {
     width: 100%;
     aspect-ratio: 1 / 1;
-    background: #08020f;
-    border: 1px solid rgba(168, 39, 255, 0.3);
+    background: #140508;
+    border: 1px solid rgba(255, 39, 75, 0.3);
     border-radius: 15px;
     display: flex;
     align-items: center;
@@ -107,7 +107,7 @@ div.campeonato-card:hover {
     text-transform: uppercase;
     text-align: center;
     line-height: 1.2;
-    text-shadow: 0 0 10px rgba(168, 39, 255, 0.6);
+    text-shadow: 0 0 10px rgba(255, 39, 75, 0.6);
 }
 
 .card-titulo {
@@ -118,7 +118,7 @@ div.campeonato-card:hover {
     letter-spacing: 1px;
     text-transform: uppercase;
     color: #fff;
-    border-bottom: 1px solid var(--purple-primary);
+    border-bottom: 1px solid var(--red-primary);
     padding-bottom: 6px;
     display: inline-block;
 }
@@ -126,7 +126,7 @@ div.campeonato-card:hover {
 .card-descricao {
     margin-top: 12px;
     font-size: 0.85rem;
-    color: #c4b5fd;
+    color: #f3d9dc;
     line-height: 1.4;
     text-align: center;
 }

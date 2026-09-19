@@ -2,48 +2,85 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pentagon</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body class="page-auth">
+
+  <div class="shape-container">
+    <div class="shape pentagon-spin"></div>
+    <div class="shape pentagon-orbit"></div>
+    <div class="shape pentagon-pulse"></div>
+  </div>
+
   <header class="navbar">
-    <a href="#" class="logo-container">Pentagon.</a>
+    <a href="index.html" class="logo-container">Pentagon.</a>
     <nav>
-      <a href="#">HOME</a>
-      <a href="#">SOBRE NÓS</a>
-      <a href="#">CONTATO</a>
+      <a href="sobrenos.html">SOBRE NÓS</a>
       <a href="index.html" class="active">ENTRAR</a>
     </nav>
   </header>
 
-  <main class="auth-container">
-    <h2>Entrar</h2>
-    <form id="formCadastro">
-      <div class="input-group">
-        <label>Nome Completo</label>
-        <input type="text" id="cadNome" placeholder="Digitar nome" required>
-      </div>
-      <div class="input-group">
-        <label>Endereço de E-mail</label>
-        <input type="email" id="cadEmail" placeholder="endereco@gmail.com" required>
-      </div>
-      <div class="input-row">
-        <div class="input-group">
-          <label>Senha</label>
-          <input type="password" id="cadSenha" placeholder="********" required>
+  <main class="dashboard">
+    <div class="dashboard-content">
+      
+      <div class="table-container auth-card">
+        
+        <div class="auth-tabs">
+          <button type="button" id="tabLogin" class="auth-tab active">Entrar</button>
+          <button type="button" id="tabCadastro" class="auth-tab">Criar Conta</button>
         </div>
-        <div class="input-group">
-          <label>Confirme a Senha</label>
-          <input type="password" id="cadConfirmaSenha" placeholder="********" required>
-        </div>
+
+        <form id="formLogin" class="auth-form">
+          <h2 class="auth-title">Bem-vindo de volta!</h2>
+          <p class="auth-subtitle">Aceda à sua conta para continuar.</p>
+
+          <div class="input-group">
+            <label for="loginEmail">Endereço de E-mail</label>
+            <input type="email" id="loginEmail" placeholder="seuemail@exemplo.com" required>
+          </div>
+
+          <div class="input-group">
+            <label for="loginSenha">Palavra-passe</label>
+            <input type="password" id="loginSenha" placeholder="••••••••" required>
+          </div>
+
+          <button type="submit" class="btn-cyber">Entrar no Painel</button>
+        </form>
+
+        <form id="formCadastro" class="auth-form hidden">
+          <h2 class="auth-title">Crie a sua Conta</h2>
+          <p class="auth-subtitle">Junte-se ao Pentagon e entre no ranking!</p>
+
+          <div class="input-group">
+            <label for="cadNome">Nome Completo</label>
+            <input type="text" id="cadNome" placeholder="Seu nome ou Nickname" required>
+          </div>
+
+          <div class="input-group">
+            <label for="cadEmail">Endereço de E-mail</label>
+            <input type="email" id="cadEmail" placeholder="endereco@exemplo.com" required>
+          </div>
+
+          <div class="input-group">
+            <label for="cadSenha">Palavra-passe</label>
+            <input type="password" id="cadSenha" placeholder="••••••••" required>
+          </div>
+
+          <div class="input-group">
+            <label for="cadConfirmaSenha">Confirme a Palavra-passe</label>
+            <input type="password" id="cadConfirmaSenha" placeholder="••••••••" required>
+          </div>
+
+          <button type="submit" class="btn-cyber">Criar Conta</button>
+        </form>
+
       </div>
-      <button type="submit" class="btn-primary">Criar Conta</button>
-      <div class="divider"><span>Ou</span></div>
-      <a href="index.html" class="btn-secondary">Log in</a>
-    </form>
+
+    </div>
   </main>
 
-  <script src="js/mockData.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>
