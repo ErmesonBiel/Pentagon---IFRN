@@ -1,6 +1,7 @@
-document.addEventListener("DOMContentLoaded", () => {
+const API_URL = "http://localhost:3000";
 
-  // --- CONTROLE DAS ABAS (ENTRAR / CRIAR CONTA) ---
+document.addEventListener("DOMContentLoaded", async () => {
+
   const tabLogin = document.getElementById("tabLogin");
   const tabCadastro = document.getElementById("tabCadastro");
   const formLogin = document.getElementById("formLogin");
@@ -22,9 +23,8 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // --- FORMULÁRIO DE CADASTRO ---
   if (formCadastro) {
-    formCadastro.addEventListener("submit", (e) => {
+    formCadastro.addEventListener("submit", async (e) => {
       e.preventDefault();
       
       const nome = document.getElementById("cadNome").value.trim();
@@ -42,54 +42,85 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      const usuarioLogado = { nome, email };
-      localStorage.setItem("usuarioLogado", JSON.stringify(usuarioLogado));
+      const novoUsuario = { nome, email, senha };
 
-      alert("Conta criada com sucesso!");
-      window.location.href = "dashboard.html";
+      try {
+        const resposta = await fetch(`${API_URL}/usuarios`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(novoUsuario)
+        });
+
+        if (resposta.ok) {
+          const usuarioCriado = await resposta.json();
+          localStorage.setItem("usuarioLogado", JSON.stringify({ nome: usuarioCriado.nome, email: usuarioCriado.email }));
+          alert("Conta criada com sucesso!");
+          window.location.href = "dashboard.html";
+        }
+      } catch (erro) {
+        console.error("Erro ao cadastrar usuário:", erro);
+      }
     });
   }
 
-  // --- FORMULÁRIO DE LOGIN ---
   if (formLogin) {
-    formLogin.addEventListener("submit", (e) => {
+    formLogin.addEventListener("submit", async (e) => {
       e.preventDefault();
 
       const email = document.getElementById("loginEmail").value.trim();
-      const usuarioLogado = { nome: email.split("@")[0], email };
       
-      localStorage.setItem("usuarioLogado", JSON.stringify(usuarioLogado));
-      window.location.href = "dashboard.html";
+      try {
+        const resposta = await fetch(`${API_URL}/usuarios?email=${email}`);
+        const usuarios = await resposta.json();
+
+        if (usuarios.length > 0) {
+          const usuario = usuarios[0];
+          localStorage.setItem("usuarioLogado", JSON.stringify({ nome: usuario.nome, email: usuario.email }));
+          window.location.href = "dashboard.html";
+        } else {
+          
+          const usuarioLogado = { nome: email.split("@")[0], email };
+          localStorage.setItem("usuarioLogado", JSON.stringify(usuarioLogado));
+          window.location.href = "dashboard.html";
+        }
+      } catch (erro) {
+        console.error("Erro ao realizar login:", erro);
+      }
     });
   }
 
   if (document.getElementById("tabelaRankingBody")) {
-    renderizarRanking();
+    await renderizarRanking();
   }
 
   const selectJ1 = document.getElementById("j1");
   const selectJ2 = document.getElementById("j2");
   const selectVencedor = document.getElementById("vencedor");
 
-  function carregarJogadoresNosSelects() {
+  async function carregarJogadoresNosSelects() {
     if (!selectJ1 || !selectJ2) return;
 
-    const ranking = JSON.parse(localStorage.getItem("pentagon_ranking")) || [];
+    try {
+      const resposta = await fetch(`${API_URL}/ranking`);
+      const ranking = await resposta.json();
 
-    selectJ1.innerHTML = '<option value="" disabled selected>Selecione o Jogador 1</option>';
-    selectJ2.innerHTML = '<option value="" disabled selected>Selecione o Jogador 2</option>';
+      selectJ1.innerHTML = '<option value="" disabled selected>Selecione o Jogador 1</option>';
+      selectJ2.innerHTML = '<option value="" disabled selected>Selecione o Jogador 2</option>';
 
-    ranking.forEach(jogador => {
-      const opt1 = document.createElement("option");
-      opt1.value = jogador.nickname;
-      opt1.textContent = jogador.nickname;
-      selectJ1.appendChild(opt1);
+      ranking.forEach(jogador => {
+        const opt1 = document.createElement("option");
+        opt1.value = jogador.nickname;
+        opt1.textContent = jogador.nickname;
+        selectJ1.appendChild(opt1);
 
-      const opt2 = document.createElement("option");
-      opt2.value = jogador.nickname;
-      opt2.textContent = jogador.nickname;
-      selectJ2.appendChild(opt2);
-    });
+        const opt2 = document.createElement("option");
+        opt2.value = jogador.nickname;
+        opt2.textContent = jogador.nickname;
+        selectJ2.appendChild(opt2);
+      });
+    } catch (erro) {
+      console.error("Erro ao carregar jogadores nos selects:", erro);
+    }
   }
 
   function atualizarOpcoesVencedor() {
@@ -114,14 +145,14 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   if (selectJ1 && selectJ2) {
-    carregarJogadoresNosSelects();
+    await carregarJogadoresNosSelects();
     selectJ1.addEventListener("change", atualizarOpcoesVencedor);
     selectJ2.addEventListener("change", atualizarOpcoesVencedor);
   }
 
   const formPartida = document.getElementById("formPartida");
   if (formPartida) {
-    formPartida.addEventListener("submit", (e) => {
+    formPartida.addEventListener("submit", async (e) => {
       e.preventDefault();
 
       const j1 = document.getElementById("j1").value.trim();
@@ -135,28 +166,35 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      const partidas = JSON.parse(localStorage.getItem("pentagon_partidas")) || [];
-      partidas.push({ 
-        id: Date.now(), 
-        jogador1: j1, 
-        jogador2: j2, 
-        vencedor, 
+      const novaPartida = {
+        jogador1: j1,
+        jogador2: j2,
+        vencedor,
         placar,
-        organizador: usuarioLogado.nome 
-      });
-      localStorage.setItem("pentagon_partidas", JSON.stringify(partidas));
+        organizador: usuarioLogado.nome
+      };
 
-      atualizarPontos(vencedor);
-      renderizarChaveamento();
+      try {
+        await fetch(`${API_URL}/partidas`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(novaPartida)
+        });
 
-      alert("Partida registrada e ranking atualizado com sucesso!");
-      formPartida.reset();
-      atualizarOpcoesVencedor();
+        await atualizarPontos(vencedor);
+        await renderizarChaveamento();
+
+        alert("Partida registrada e ranking atualizado com sucesso!");
+        formPartida.reset();
+        atualizarOpcoesVencedor();
+      } catch (erro) {
+        console.error("Erro ao registrar partida:", erro);
+      }
     });
   }
 
   if (document.getElementById("bracket-container")){
-    renderizarChaveamento();
+    await renderizarChaveamento();
   }
 
   const userNomeElement = document.getElementById("userNome");
@@ -173,153 +211,192 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (listJogador || listOrganizador) {
     const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado")) || { nome: "oi" };
-    const partidas = JSON.parse(localStorage.getItem("pentagon_partidas")) || [];
     const nomeUsuario = usuarioLogado.nome ? usuarioLogado.nome.toLowerCase() : "";
 
-    const criarItemPartida = (p) => {
-      const li = document.createElement("li");
-      li.className = "history-item";
-      
-      const j1 = p.jogador1 || 'Jogador 1';
-      const j2 = p.jogador2 || 'Jogador 2';
-      const placar = p.placar ? p.placar : 'vs';
-      const vencedor = p.vencedor || 'N/A';
+    try {
+      const resposta = await fetch(`${API_URL}/partidas`);
+      const partidas = await resposta.json();
 
-      li.innerHTML = `
-        <div class="history-match">
-          <span class="player">${j1}</span>
-          <span class="score">${placar}</span>
-          <span class="player">${j2}</span>
-        </div>
-        <span class="winner-tag">Vencedor: <strong>${vencedor}</strong></span>
-      `;
-      return li;
-    };
-
-    if (listJogador) {
-      listJogador.innerHTML = "";
-      const partidasComoJogador = partidas.filter(p => 
-        (p.jogador1 && p.jogador1.toLowerCase() === nomeUsuario) || 
-        (p.jogador2 && p.jogador2.toLowerCase() === nomeUsuario)
-      );
-
-      if (partidasComoJogador.length === 0) {
-        listJogador.innerHTML = '<li class="history-item">Nenhuma partida jogada recentemente.</li>';
-      } else {
-        partidasComoJogador.slice(-5).reverse().forEach(p => {
-          listJogador.appendChild(criarItemPartida(p));
-        });
-      }
-    }
-
-    if (listOrganizador) {
-      listOrganizador.innerHTML = "";
-      const partidasMinistradas = partidas.filter(p => {
-        const eOrganizador = p.organizador ? p.organizador.toLowerCase() === nomeUsuario : true;
-        const eJogador = (p.jogador1 && p.jogador1.toLowerCase() === nomeUsuario) || 
-                         (p.jogador2 && p.jogador2.toLowerCase() === nomeUsuario);
+      const criarItemPartida = (p) => {
+        const li = document.createElement("li");
+        li.className = "history-item";
         
-        return eOrganizador && !eJogador;
-      });
+        const j1 = p.jogador1 || 'Jogador 1';
+        const j2 = p.jogador2 || 'Jogador 2';
+        const placar = p.placar ? p.placar : 'vs';
+        const vencedor = p.vencedor || 'N/A';
 
-      if (partidasMinistradas.length === 0) {
-        listOrganizador.innerHTML = '<li class="history-item">Nenhuma partida ministrada por você.</li>';
-      } else {
-        partidasMinistradas.slice(-5).reverse().forEach(p => {
-          listOrganizador.appendChild(criarItemPartida(p));
-        });
+        li.innerHTML = `
+          <div class="history-match">
+            <span class="player">${j1}</span>
+            <span class="score">${placar}</span>
+            <span class="player">${j2}</span>
+          </div>
+          <span class="winner-tag">Vencedor: <strong>${vencedor}</strong></span>
+        `;
+        return li;
+      };
+
+      if (listJogador) {
+        listJogador.innerHTML = "";
+        const partidasComoJogador = partidas.filter(p => 
+          (p.jogador1 && p.jogador1.toLowerCase() === nomeUsuario) || 
+          (p.jogador2 && p.jogador2.toLowerCase() === nomeUsuario)
+        );
+
+        if (partidasComoJogador.length === 0) {
+          listJogador.innerHTML = '<li class="history-item">Nenhuma partida jogada recentemente.</li>';
+        } else {
+          partidasComoJogador.slice(-5).reverse().forEach(p => {
+            listJogador.appendChild(criarItemPartida(p));
+          });
+        }
       }
+
+      if (listOrganizador) {
+        listOrganizador.innerHTML = "";
+        const partidasMinistradas = partidas.filter(p => {
+          const eOrganizador = p.organizador ? p.organizador.toLowerCase() === nomeUsuario : true;
+          const eJogador = (p.jogador1 && p.jogador1.toLowerCase() === nomeUsuario) || 
+                           (p.jogador2 && p.jogador2.toLowerCase() === nomeUsuario);
+          
+          return eOrganizador && !eJogador;
+        });
+
+        if (partidasMinistradas.length === 0) {
+          listOrganizador.innerHTML = '<li class="history-item">Nenhuma partida ministrada por você.</li>';
+        } else {
+          partidasMinistradas.slice(-5).reverse().forEach(p => {
+            listOrganizador.appendChild(criarItemPartida(p));
+          });
+        }
+      }
+    } catch (erro) {
+      console.error("Erro ao carregar histórico:", erro);
     }
   }
 
 });
 
-function renderizarRanking() {
+async function renderizarRanking() {
   const tbody = document.getElementById("tabelaRankingBody");
   if (!tbody) return;
   
-  const ranking = JSON.parse(localStorage.getItem("pentagon_ranking")) || [];
+  try {
+    const resposta = await fetch(`${API_URL}/ranking`);
+    const ranking = await resposta.json();
 
-  ranking.sort((a, b) => b.pontos - a.pontos);
-  tbody.innerHTML = "";
+    ranking.sort((a, b) => b.pontos - a.pontos);
+    tbody.innerHTML = "";
 
-  ranking.forEach((item, index) => {
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td>#${index + 1}</td>
-      <td>${item.nickname}</td>
-      <td><strong>${item.pontos} pts</strong></td>
-      <td>${item.vitorias}</td>
-      <td>${item.derrotas}</td>
-      <td><button onclick="removerJogador(${item.id})" class="btn-del">Excluir</button></td>
-    `;
-    tbody.appendChild(tr);
-  });
-}
-
-function atualizarPontos(vencedorNickname) {
-  let ranking = JSON.parse(localStorage.getItem("pentagon_ranking")) || [];
-  let jogador = ranking.find(j => j.nickname.toLowerCase() === vencedorNickname.toLowerCase());
-
-  if (jogador) {
-    jogador.pontos += 3;
-    jogador.vitorias += 1;
-  } else {
-    ranking.push({ id: Date.now(), nickname: vencedorNickname, pontos: 3, vitorias: 1, derrotas: 0 });
+    ranking.forEach((item, index) => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>#${index + 1}</td>
+        <td>${item.nickname}</td>
+        <td><strong>${item.pontos} pts</strong></td>
+        <td>${item.vitorias}</td>
+        <td>${item.derrotas}</td>
+        <td><button onclick="removerJogador('${item.id}')" class="btn-del">Excluir</button></td>
+      `;
+      tbody.appendChild(tr);
+    });
+  } catch (erro) {
+    console.error("Erro ao renderizar ranking:", erro);
   }
-
-  localStorage.setItem("pentagon_ranking", JSON.stringify(ranking));
 }
 
-function removerJogador(id) {
+async function atualizarPontos(vencedorNickname) {
+  try {
+    const resposta = await fetch(`${API_URL}/ranking`);
+    const ranking = await resposta.json();
+
+    let jogador = ranking.find(j => j.nickname.toLowerCase() === vencedorNickname.toLowerCase());
+
+    if (jogador) {
+      await fetch(`${API_URL}/ranking/${jogador.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          pontos: jogador.pontos + 3,
+          vitorias: jogador.vitorias + 1
+        })
+      });
+    } else {
+      await fetch(`${API_URL}/ranking`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          nickname: vencedorNickname,
+          pontos: 3,
+          vitorias: 1,
+          derrotas: 0
+        })
+      });
+    }
+  } catch (erro) {
+    console.error("Erro ao atualizar pontos:", erro);
+  }
+}
+
+async function removerJogador(id) {
   if (confirm("Tem certeza que deseja remover este jogador do ranking?")) {
-    let ranking = JSON.parse(localStorage.getItem("pentagon_ranking")) || [];
-    ranking = ranking.filter(j => j.id !== id);
-    localStorage.setItem("pentagon_ranking", JSON.stringify(ranking));
-    renderizarRanking();
+    try {
+      await fetch(`${API_URL}/ranking/${id}`, {
+        method: "DELETE"
+      });
+      await renderizarRanking();
+    } catch (erro) {
+      console.error("Erro ao remover jogador:", erro);
+    }
   }
 }
 
-function renderizarChaveamento() {
+async function renderizarChaveamento() {
   const container = document.getElementById("bracket-container");
   if (!container) return;
 
-  const partidas = JSON.parse(localStorage.getItem("pentagon_partidas")) || [];
+  try {
+    const resposta = await fetch(`${API_URL}/partidas`);
+    const partidas = await resposta.json();
 
-  const p1 = partidas[0] ? `${partidas[0].jogador1} vs ${partidas[0].jogador2} (${partidas[0].vencedor})` : "Aguardando...";
-  const p2 = partidas[1] ? `${partidas[1].jogador1} vs ${partidas[1].jogador2} (${partidas[1].vencedor})` : "Aguardando...";
-  const p3 = partidas[2] ? `${partidas[2].jogador1} vs ${partidas[2].jogador2} (${partidas[2].vencedor})` : "Aguardando...";
-  const p4 = partidas[3] ? `${partidas[3].jogador1} vs ${partidas[3].jogador2} (${partidas[3].vencedor})` : "Aguardando...";
+    const p1 = partidas[0] ? `${partidas[0].jogador1} vs ${partidas[0].jogador2} (${partidas[0].vencedor})` : "Aguardando...";
+    const p2 = partidas[1] ? `${partidas[1].jogador1} vs ${partidas[1].jogador2} (${partidas[1].vencedor})` : "Aguardando...";
+    const p3 = partidas[2] ? `${partidas[2].jogador1} vs ${partidas[2].jogador2} (${partidas[2].vencedor})` : "Aguardando...";
+    const p4 = partidas[3] ? `${partidas[3].jogador1} vs ${partidas[3].jogador2} (${partidas[3].vencedor})` : "Aguardando...";
 
-  const v1 = partidas[0] ? partidas[0].vencedor : "Aguardando...";
-  const v2 = partidas[1] ? partidas[1].vencedor : "Aguardando...";
-  const v3 = partidas[2] ? partidas[2].vencedor : "Aguardando...";
-  const v4 = partidas[3] ? partidas[3].vencedor : "Aguardando...";
+    const v1 = partidas[0] ? partidas[0].vencedor : "Aguardando...";
+    const v2 = partidas[1] ? partidas[1].vencedor : "Aguardando...";
+    const v3 = partidas[2] ? partidas[2].vencedor : "Aguardando...";
+    const v4 = partidas[3] ? partidas[3].vencedor : "Aguardando...";
 
-  const semi1 = (partidas[4]) ? `${partidas[4].jogador1} vs ${partidas[4].jogador2} (${partidas[4].vencedor})` : `${v1} vs ${v2}`;
-  const semi2 = (partidas[5]) ? `${partidas[5].jogador1} vs ${partidas[5].jogador2} (${partidas[5].vencedor})` : `${v3} vs ${v4}`;
+    const semi1 = (partidas[4]) ? `${partidas[4].jogador1} vs ${partidas[4].jogador2} (${partidas[4].vencedor})` : `${v1} vs ${v2}`;
+    const semi2 = (partidas[5]) ? `${partidas[5].jogador1} vs ${partidas[5].jogador2} (${partidas[5].vencedor})` : `${v3} vs ${v4}`;
 
-  const vencedorSemi1 = partidas[4] ? partidas[4].vencedor : "Aguardando...";
-  const vencedorSemi2 = partidas[5] ? partidas[5].vencedor : "Aguardando...";
+    const vencedorSemi1 = partidas[4] ? partidas[4].vencedor : "Aguardando...";
+    const vencedorSemi2 = partidas[5] ? partidas[5].vencedor : "Aguardando...";
 
-  const finalTexto = partidas[6] ? `${partidas[6].jogador1} vs ${partidas[6].jogador2} — Vencedor: ${partidas[6].vencedor}` : `${vencedorSemi1} vs ${vencedorSemi2}`;
+    const finalTexto = partidas[6] ? `${partidas[6].jogador1} vs ${partidas[6].jogador2} — Vencedor: ${partidas[6].vencedor}` : `${vencedorSemi1} vs ${vencedorSemi2}`;
 
-  container.innerHTML = `
-    <div class="round">
-      <h3>Quartas de Final</h3>
-      <div class="matchup"><span>${p1}</span></div>
-      <div class="matchup"><span>${p2}</span></div>
-      <div class="matchup"><span>${p3}</span></div>
-      <div class="matchup"><span>${p4}</span></div>
-    </div>
-    <div class="round">
-      <h3>Semifinais</h3>
-      <div class="matchup"><span>${semi1}</span></div>
-      <div class="matchup"><span>${semi2}</span></div>
-    </div>
-    <div class="round">
-      <h3>Final</h3>
-      <div class="matchup"><span>${finalTexto}</span></div>
-    </div>
-  `;
+    container.innerHTML = `
+      <div class="round">
+        <h3>Quartas de Final</h3>
+        <div class="matchup"><span>${p1}</span></div>
+        <div class="matchup"><span>${p2}</span></div>
+        <div class="matchup"><span>${p3}</span></div>
+        <div class="matchup"><span>${p4}</span></div>
+      </div>
+      <div class="round">
+        <h3>Semifinais</h3>
+        <div class="matchup"><span>${semi1}</span></div>
+        <div class="matchup"><span>${semi2}</span></div>
+      </div>
+      <div class="round">
+        <h3>Final</h3>
+        <div class="matchup"><span>${finalTexto}</span></div>
+      </div>
+    `;
+  } catch (erro) {
+    console.error("Erro ao renderizar chaveamento:", erro);
+  }
 }

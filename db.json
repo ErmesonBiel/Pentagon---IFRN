@@ -1,0 +1,19 @@
+{
+  "integrantes": [
+    {
+      "id": 1,
+      "nome": "Ermeson Gabriel",
+      "foto": "img/foto1.jpg"
+    },
+    {
+      "id": 2,
+      "nome": "Maria Vitoria",
+      "foto": "img/foto2.jpg"
+    },
+    {
+      "id": 3,
+      "nome": "Gabriele Costa",
+      "foto": "img/foto3.jpg"
+    }
+  ]
+}
