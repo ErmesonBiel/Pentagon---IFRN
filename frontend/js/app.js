@@ -1,7 +1,6 @@
-const API_URL = "http://localhost:3000";
+document.addEventListener("DOMContentLoaded", () => {
 
-document.addEventListener("DOMContentLoaded", async () => {
-
+  // --- CONTROLE DAS ABAS (ENTRAR / CRIAR CONTA) ---
   const tabLogin = document.getElementById("tabLogin");
   const tabCadastro = document.getElementById("tabCadastro");
   const formLogin = document.getElementById("formLogin");
@@ -23,10 +22,28 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
-  if (formCadastro) {
-    formCadastro.addEventListener("submit", async (e) => {
+  // --- FORMULÁRIO DE LOGIN ---
+  if (formLogin) {
+    formLogin.addEventListener("submit", (e) => {
       e.preventDefault();
-      
+
+      const email = document.getElementById("loginEmail").value.trim();
+      if (!email) {
+        alert("Por favor, digite um e-mail!");
+        return;
+      }
+
+      const usuarioLogado = { nome: email.split("@")[0], email };
+      localStorage.setItem("usuarioLogado", JSON.stringify(usuarioLogado));
+      window.location.href = "dashboard.html";
+    });
+  }
+
+  // --- FORMULÁRIO DE CADASTRO ---
+  if (formCadastro) {
+    formCadastro.addEventListener("submit", (e) => {
+      e.preventDefault();
+
       const nome = document.getElementById("cadNome").value.trim();
       const email = document.getElementById("cadEmail").value.trim();
       const senha = document.getElementById("cadSenha").value;
@@ -42,85 +59,52 @@ document.addEventListener("DOMContentLoaded", async () => {
         return;
       }
 
-      const novoUsuario = { nome, email, senha };
+      const usuarioLogado = { nome, email };
+      localStorage.setItem("usuarioLogado", JSON.stringify(usuarioLogado));
 
-      try {
-        const resposta = await fetch(`${API_URL}/usuarios`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(novoUsuario)
-        });
-
-        if (resposta.ok) {
-          const usuarioCriado = await resposta.json();
-          localStorage.setItem("usuarioLogado", JSON.stringify({ nome: usuarioCriado.nome, email: usuarioCriado.email }));
-          alert("Conta criada com sucesso!");
-          window.location.href = "dashboard.html";
-        }
-      } catch (erro) {
-        console.error("Erro ao cadastrar usuário:", erro);
-      }
+      alert("Conta criada com sucesso!");
+      window.location.href = "dashboard.html";
     });
   }
 
-  if (formLogin) {
-    formLogin.addEventListener("submit", async (e) => {
-      e.preventDefault();
+  // --- PÁGINA DE PERFIL / PAINEL (EXIBIR DADOS DO USUÁRIO) ---
+  const userNomeElement = document.getElementById("userNome");
+  const userEmailElement = document.getElementById("userEmail");
 
-      const email = document.getElementById("loginEmail").value.trim();
-      
-      try {
-        const resposta = await fetch(`${API_URL}/usuarios?email=${email}`);
-        const usuarios = await resposta.json();
-
-        if (usuarios.length > 0) {
-          const usuario = usuarios[0];
-          localStorage.setItem("usuarioLogado", JSON.stringify({ nome: usuario.nome, email: usuario.email }));
-          window.location.href = "dashboard.html";
-        } else {
-          
-          const usuarioLogado = { nome: email.split("@")[0], email };
-          localStorage.setItem("usuarioLogado", JSON.stringify(usuarioLogado));
-          window.location.href = "dashboard.html";
-        }
-      } catch (erro) {
-        console.error("Erro ao realizar login:", erro);
-      }
-    });
+  if (userNomeElement || userEmailElement) {
+    const userLogado = JSON.parse(localStorage.getItem("usuarioLogado")) || { nome: "Jogador", email: "jogador@pentagon.com" };
+    if (userNomeElement) userNomeElement.innerText = userLogado.nome;
+    if (userEmailElement) userEmailElement.innerText = userLogado.email;
   }
 
+  // --- RENDEREIZAR RANKING & SELECTS ---
   if (document.getElementById("tabelaRankingBody")) {
-    await renderizarRanking();
+    renderizarRanking();
   }
 
   const selectJ1 = document.getElementById("j1");
   const selectJ2 = document.getElementById("j2");
   const selectVencedor = document.getElementById("vencedor");
 
-  async function carregarJogadoresNosSelects() {
+  function carregarJogadoresNosSelects() {
     if (!selectJ1 || !selectJ2) return;
 
-    try {
-      const resposta = await fetch(`${API_URL}/ranking`);
-      const ranking = await resposta.json();
+    const ranking = JSON.parse(localStorage.getItem("pentagon_ranking")) || [];
 
-      selectJ1.innerHTML = '<option value="" disabled selected>Selecione o Jogador 1</option>';
-      selectJ2.innerHTML = '<option value="" disabled selected>Selecione o Jogador 2</option>';
+    selectJ1.innerHTML = '<option value="" disabled selected>Selecione o Jogador 1</option>';
+    selectJ2.innerHTML = '<option value="" disabled selected>Selecione o Jogador 2</option>';
 
-      ranking.forEach(jogador => {
-        const opt1 = document.createElement("option");
-        opt1.value = jogador.nickname;
-        opt1.textContent = jogador.nickname;
-        selectJ1.appendChild(opt1);
+    ranking.forEach(jogador => {
+      const opt1 = document.createElement("option");
+      opt1.value = jogador.nickname;
+      opt1.textContent = jogador.nickname;
+      selectJ1.appendChild(opt1);
 
-        const opt2 = document.createElement("option");
-        opt2.value = jogador.nickname;
-        opt2.textContent = jogador.nickname;
-        selectJ2.appendChild(opt2);
-      });
-    } catch (erro) {
-      console.error("Erro ao carregar jogadores nos selects:", erro);
-    }
+      const opt2 = document.createElement("option");
+      opt2.value = jogador.nickname;
+      opt2.textContent = jogador.nickname;
+      selectJ2.appendChild(opt2);
+    });
   }
 
   function atualizarOpcoesVencedor() {
@@ -145,258 +129,113 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   if (selectJ1 && selectJ2) {
-    await carregarJogadoresNosSelects();
+    carregarJogadoresNosSelects();
     selectJ1.addEventListener("change", atualizarOpcoesVencedor);
     selectJ2.addEventListener("change", atualizarOpcoesVencedor);
   }
 
+  // --- FORMULÁRIO REGISTRAR PARTIDA ---
   const formPartida = document.getElementById("formPartida");
   if (formPartida) {
-    formPartida.addEventListener("submit", async (e) => {
+    formPartida.addEventListener("submit", (e) => {
       e.preventDefault();
 
-      const j1 = document.getElementById("j1").value.trim();
-      const j2 = document.getElementById("j2").value.trim();
-      const vencedor = document.getElementById("vencedor").value.trim();
+      const j1 = selectJ1 ? selectJ1.value : "";
+      const j2 = selectJ2 ? selectJ2.value : "";
+      const vencedor = selectVencedor ? selectVencedor.value : "";
       const placar = document.getElementById("placar").value.trim();
-      const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado")) || { nome: "oi" };
+      const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado")) || { nome: "Admin" };
 
-      if (vencedor !== j1 && vencedor !== j2) {
-        alert("Erro (RN02): O vencedor deve ser um dos participantes da partida!");
+      if (!j1 || !j2 || !vencedor) {
+        alert("Preencha todos os campos do formulário!");
         return;
       }
 
-      const novaPartida = {
+      if (j1 === j2) {
+        alert("Selecione dois jogadores diferentes!");
+        return;
+      }
+
+      const partidas = JSON.parse(localStorage.getItem("pentagon_partidas")) || [];
+      partidas.push({
+        id: Date.now(),
         jogador1: j1,
         jogador2: j2,
         vencedor,
         placar,
         organizador: usuarioLogado.nome
-      };
+      });
+      localStorage.setItem("pentagon_partidas", JSON.stringify(partidas));
 
-      try {
-        await fetch(`${API_URL}/partidas`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(novaPartida)
-        });
+      atualizarPontos(vencedor);
+      alert("Partida registrada com sucesso!");
 
-        await atualizarPontos(vencedor);
-        await renderizarChaveamento();
-
-        alert("Partida registrada e ranking atualizado com sucesso!");
-        formPartida.reset();
-        atualizarOpcoesVencedor();
-      } catch (erro) {
-        console.error("Erro ao registrar partida:", erro);
-      }
+      formPartida.reset();
+      renderizarRanking();
+      carregarJogadoresNosSelects();
+      atualizarOpcoesVencedor();
     });
-  }
-
-  if (document.getElementById("bracket-container")){
-    await renderizarChaveamento();
-  }
-
-  const userNomeElement = document.getElementById("userNome");
-  const userEmailElement = document.getElementById("userEmail");
-
-  if (userNomeElement || userEmailElement) {
-    const userLogado = JSON.parse(localStorage.getItem("usuarioLogado")) || { nome: "oi", email: "oi@gmail.com" };
-    if (userNomeElement) userNomeElement.innerText = userLogado.nome || "oi";
-    if (userEmailElement) userEmailElement.innerText = userLogado.email || "oi@gmail.com";
-  }
-
-  const listJogador = document.getElementById("historicoJogador");
-  const listOrganizador = document.getElementById("historicoOrganizador");
-
-  if (listJogador || listOrganizador) {
-    const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado")) || { nome: "oi" };
-    const nomeUsuario = usuarioLogado.nome ? usuarioLogado.nome.toLowerCase() : "";
-
-    try {
-      const resposta = await fetch(`${API_URL}/partidas`);
-      const partidas = await resposta.json();
-
-      const criarItemPartida = (p) => {
-        const li = document.createElement("li");
-        li.className = "history-item";
-        
-        const j1 = p.jogador1 || 'Jogador 1';
-        const j2 = p.jogador2 || 'Jogador 2';
-        const placar = p.placar ? p.placar : 'vs';
-        const vencedor = p.vencedor || 'N/A';
-
-        li.innerHTML = `
-          <div class="history-match">
-            <span class="player">${j1}</span>
-            <span class="score">${placar}</span>
-            <span class="player">${j2}</span>
-          </div>
-          <span class="winner-tag">Vencedor: <strong>${vencedor}</strong></span>
-        `;
-        return li;
-      };
-
-      if (listJogador) {
-        listJogador.innerHTML = "";
-        const partidasComoJogador = partidas.filter(p => 
-          (p.jogador1 && p.jogador1.toLowerCase() === nomeUsuario) || 
-          (p.jogador2 && p.jogador2.toLowerCase() === nomeUsuario)
-        );
-
-        if (partidasComoJogador.length === 0) {
-          listJogador.innerHTML = '<li class="history-item">Nenhuma partida jogada recentemente.</li>';
-        } else {
-          partidasComoJogador.slice(-5).reverse().forEach(p => {
-            listJogador.appendChild(criarItemPartida(p));
-          });
-        }
-      }
-
-      if (listOrganizador) {
-        listOrganizador.innerHTML = "";
-        const partidasMinistradas = partidas.filter(p => {
-          const eOrganizador = p.organizador ? p.organizador.toLowerCase() === nomeUsuario : true;
-          const eJogador = (p.jogador1 && p.jogador1.toLowerCase() === nomeUsuario) || 
-                           (p.jogador2 && p.jogador2.toLowerCase() === nomeUsuario);
-          
-          return eOrganizador && !eJogador;
-        });
-
-        if (partidasMinistradas.length === 0) {
-          listOrganizador.innerHTML = '<li class="history-item">Nenhuma partida ministrada por você.</li>';
-        } else {
-          partidasMinistradas.slice(-5).reverse().forEach(p => {
-            listOrganizador.appendChild(criarItemPartida(p));
-          });
-        }
-      }
-    } catch (erro) {
-      console.error("Erro ao carregar histórico:", erro);
-    }
   }
 
 });
 
-async function renderizarRanking() {
+// --- FUNÇÃO PARA RENDERIZAR RANKING ---
+function renderizarRanking() {
   const tbody = document.getElementById("tabelaRankingBody");
   if (!tbody) return;
-  
-  try {
-    const resposta = await fetch(`${API_URL}/ranking`);
-    const ranking = await resposta.json();
 
-    ranking.sort((a, b) => b.pontos - a.pontos);
-    tbody.innerHTML = "";
+  const ranking = JSON.parse(localStorage.getItem("pentagon_ranking")) || [];
 
-    ranking.forEach((item, index) => {
-      const tr = document.createElement("tr");
-      tr.innerHTML = `
-        <td>#${index + 1}</td>
-        <td>${item.nickname}</td>
-        <td><strong>${item.pontos} pts</strong></td>
-        <td>${item.vitorias}</td>
-        <td>${item.derrotas}</td>
-        <td><button onclick="removerJogador('${item.id}')" class="btn-del">Excluir</button></td>
-      `;
-      tbody.appendChild(tr);
-    });
-  } catch (erro) {
-    console.error("Erro ao renderizar ranking:", erro);
+  // Se o ranking estiver vazio, adiciona dados de exemplo iniciais
+  if (ranking.length === 0) {
+    const dadosIniciais = [
+      { id: 1, nickname: "Ermeson", pontos: 9, vitorias: 3, derrotas: 0 },
+      { id: 2, nickname: "Maria", pontos: 6, vitorias: 2, derrotas: 1 },
+      { id: 3, nickname: "Gabriele", pontos: 3, vitorias: 1, derrotas: 2 }
+    ];
+    localStorage.setItem("pentagon_ranking", JSON.stringify(dadosIniciais));
+    return renderizarRanking();
   }
-}
 
-async function atualizarPontos(vencedorNickname) {
-  try {
-    const resposta = await fetch(`${API_URL}/ranking`);
-    const ranking = await resposta.json();
+  ranking.sort((a, b) => b.pontos - a.pontos);
+  tbody.innerHTML = "";
 
-    let jogador = ranking.find(j => j.nickname.toLowerCase() === vencedorNickname.toLowerCase());
-
-    if (jogador) {
-      await fetch(`${API_URL}/ranking/${jogador.id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          pontos: jogador.pontos + 3,
-          vitorias: jogador.vitorias + 1
-        })
-      });
-    } else {
-      await fetch(`${API_URL}/ranking`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          nickname: vencedorNickname,
-          pontos: 3,
-          vitorias: 1,
-          derrotas: 0
-        })
-      });
-    }
-  } catch (erro) {
-    console.error("Erro ao atualizar pontos:", erro);
-  }
-}
-
-async function removerJogador(id) {
-  if (confirm("Tem certeza que deseja remover este jogador do ranking?")) {
-    try {
-      await fetch(`${API_URL}/ranking/${id}`, {
-        method: "DELETE"
-      });
-      await renderizarRanking();
-    } catch (erro) {
-      console.error("Erro ao remover jogador:", erro);
-    }
-  }
-}
-
-async function renderizarChaveamento() {
-  const container = document.getElementById("bracket-container");
-  if (!container) return;
-
-  try {
-    const resposta = await fetch(`${API_URL}/partidas`);
-    const partidas = await resposta.json();
-
-    const p1 = partidas[0] ? `${partidas[0].jogador1} vs ${partidas[0].jogador2} (${partidas[0].vencedor})` : "Aguardando...";
-    const p2 = partidas[1] ? `${partidas[1].jogador1} vs ${partidas[1].jogador2} (${partidas[1].vencedor})` : "Aguardando...";
-    const p3 = partidas[2] ? `${partidas[2].jogador1} vs ${partidas[2].jogador2} (${partidas[2].vencedor})` : "Aguardando...";
-    const p4 = partidas[3] ? `${partidas[3].jogador1} vs ${partidas[3].jogador2} (${partidas[3].vencedor})` : "Aguardando...";
-
-    const v1 = partidas[0] ? partidas[0].vencedor : "Aguardando...";
-    const v2 = partidas[1] ? partidas[1].vencedor : "Aguardando...";
-    const v3 = partidas[2] ? partidas[2].vencedor : "Aguardando...";
-    const v4 = partidas[3] ? partidas[3].vencedor : "Aguardando...";
-
-    const semi1 = (partidas[4]) ? `${partidas[4].jogador1} vs ${partidas[4].jogador2} (${partidas[4].vencedor})` : `${v1} vs ${v2}`;
-    const semi2 = (partidas[5]) ? `${partidas[5].jogador1} vs ${partidas[5].jogador2} (${partidas[5].vencedor})` : `${v3} vs ${v4}`;
-
-    const vencedorSemi1 = partidas[4] ? partidas[4].vencedor : "Aguardando...";
-    const vencedorSemi2 = partidas[5] ? partidas[5].vencedor : "Aguardando...";
-
-    const finalTexto = partidas[6] ? `${partidas[6].jogador1} vs ${partidas[6].jogador2} — Vencedor: ${partidas[6].vencedor}` : `${vencedorSemi1} vs ${vencedorSemi2}`;
-
-    container.innerHTML = `
-      <div class="round">
-        <h3>Quartas de Final</h3>
-        <div class="matchup"><span>${p1}</span></div>
-        <div class="matchup"><span>${p2}</span></div>
-        <div class="matchup"><span>${p3}</span></div>
-        <div class="matchup"><span>${p4}</span></div>
-      </div>
-      <div class="round">
-        <h3>Semifinais</h3>
-        <div class="matchup"><span>${semi1}</span></div>
-        <div class="matchup"><span>${semi2}</span></div>
-      </div>
-      <div class="round">
-        <h3>Final</h3>
-        <div class="matchup"><span>${finalTexto}</span></div>
-      </div>
+  ranking.forEach((item, index) => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>#${index + 1}</td>
+      <td>${item.nickname}</td>
+      <td><strong>${item.pontos} pts</strong></td>
+      <td>${item.vitorias}</td>
+      <td>${item.derrotas}</td>
+      <td><button onclick="removerJogador(${item.id})" class="btn-del" style="background:#ff274b; color:#fff; border:none; padding:4px 8px; border-radius:4px; cursor:pointer;">Excluir</button></td>
     `;
-  } catch (erro) {
-    console.error("Erro ao renderizar chaveamento:", erro);
+    tbody.appendChild(tr);
+  });
+}
+
+// --- ATUALIZAR PONTOS ---
+function atualizarPontos(vencedorNickname) {
+  let ranking = JSON.parse(localStorage.getItem("pentagon_ranking")) || [];
+  let jogador = ranking.find(j => j.nickname.toLowerCase() === vencedorNickname.toLowerCase());
+
+  if (jogador) {
+    jogador.pontos = (jogador.pontos || 0) + 3;
+    jogador.vitorias = (jogador.vitorias || 0) + 1;
+  } else {
+    ranking.push({ id: Date.now(), nickname: vencedorNickname, pontos: 3, vitorias: 1, derrotas: 0 });
+  }
+
+  localStorage.setItem("pentagon_ranking", JSON.stringify(ranking));
+}
+
+// --- REMOVER JOGADOR ---
+function removerJogador(id) {
+  if (confirm("Tem certeza que deseja remover este jogador?")) {
+    let ranking = JSON.parse(localStorage.getItem("pentagon_ranking")) || [];
+    ranking = ranking.filter(j => j.id !== id);
+    localStorage.setItem("pentagon_ranking", JSON.stringify(ranking));
+    renderizarRanking();
+    location.reload();
   }
 }

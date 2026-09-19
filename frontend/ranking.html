@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Pentagon</title>
+  <title>Pentagon - Ranking</title>
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -12,6 +12,7 @@
       <div class="shape pentagon-orbit"></div>
       <div class="shape pentagon-pulse"></div>
   </div>
+  
   <header class="navbar">
     <a href="dashboard.html" class="logo-container">Pentagon.</a>
     <nav>
@@ -35,6 +36,42 @@
         <div class="cyber-line"></div>
       </header>
 
+      <!-- Formulário para Registrar Resultado de Partida -->
+      <div class="table-container" style="margin-bottom: 2rem;">
+        <h2>Registrar Resultado da Partida</h2>
+        <form id="formPartida" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem; align-items: center;">
+          
+          <select id="j1" required style="padding: 0.8rem; border-radius: 8px; border: 1px solid #ff0055; background: #0d0d0d; color: #fff;">
+            <option value="" disabled selected>Selecione o Jogador 1</option>
+          </select>
+
+          <select id="j2" required style="padding: 0.8rem; border-radius: 8px; border: 1px solid #ff0055; background: #0d0d0d; color: #fff;">
+            <option value="" disabled selected>Selecione o Jogador 2</option>
+          </select>
+
+          <input 
+            type="text" 
+            id="placar" 
+            placeholder="Placar (ex: 2x1)" 
+            required 
+            style="padding: 0.8rem; border-radius: 8px; border: 1px solid #ff0055; background: rgba(0,0,0,0.5); color: #fff;"
+          />
+
+          <select id="vencedor" required style="padding: 0.8rem; border-radius: 8px; border: 1px solid #ff0055; background: #0d0d0d; color: #fff;">
+            <option value="" disabled selected>Selecione o Vencedor</option>
+          </select>
+
+          <button 
+            type="submit" 
+            class="btn-cadastrar" 
+            style="padding: 0.8rem 1.5rem; background: #ff0055; color: #fff; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; grid-column: 1 / -1;"
+          >
+            Salvar Partida e Atualizar Ranking
+          </button>
+        </form>
+      </div>
+
+      <!-- Tabela de Classificação -->
       <div class="table-container">
         <h2>Tabela de Classificação</h2>
         <table>
